@@ -1,0 +1,70 @@
+<?php
+if (tokentime($_COOKIE)) {
+    die(include_once __TEMPLATE_DIR__ . "/Admin/backstage.html");
+} else { ?>
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" />
+    <meta name="renderer" content="webkit" />
+    <meta name="force-rendering" content="webkit" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <link rel="Shortcut Icon" href="/favicon.ico">
+    <link rel="bookmark" href="/favicon.ico" type="image/x-icon" />
+    <script src="https://registry.npmmirror.com/mdui/2.0.6/files/mdui.global.js"></script>
+    <script src="/assets/js/jquery-3.7.1.min.js"></script>
+    <script src="/assets/js/init.js"></script>
+    <title>登录</title>
+</head>
+
+<body class="mdui-theme-auto">
+    <div class="grid" style="justify-content: center;align-items: center;display: flex;">
+        <mdui-card style="max-width: 500px;">
+            <h2>登录</h2>
+            <mdui-text-field label="账号" id="username" clearable></mdui-text-field>
+            <mdui-text-field label="密码" id="password" type="password" toggle-password clearable></mdui-text-field>
+            <p></p>
+            <mdui-button onclick="login()">登入</mdui-button>
+            <br>
+            <a href="/">返回</a>
+        </mdui-card>
+    </div>
+    <script>
+        function login() {
+            var username = $("#username").val();
+            var password = $("#password").val();
+
+            if (username == "" || password == "") {
+                popups.tips.add("用户名或密码不能为空", "error_outline");
+                return;
+            }
+            else {
+                var send = {
+                    "username": username,
+                    "password": password
+                };
+                sendData("/v2/auth/login", send, function (data) {
+                    cookie.set("user", data.data.user, 60 * 60);
+                    cookie.set("token", data.data.token, 60 * 60);
+                    location.reload();
+                })
+            }
+        }
+
+        function sendData(url, data, callback) {
+            try {
+                data["token"] = cookie.get("token");
+                $.post(url, data, function (data, status) {
+                    callback(data, status);
+                });
+            } catch (error) {
+                popups.dialog(error);
+            }
+        }
+    </script>
+</body>
+
+</html>
+<?php } ?>

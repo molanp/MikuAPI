@@ -1,0 +1,97 @@
+<?php
+$announce_list = "";
+$result = $DATABASE->prepare("SELECT id, title, modified FROM miku_archives WHERE type = 'announce' ORDER BY id DESC LIMIT 20");
+$result->execute();
+$announce_data = $result->fetchAll(PDO::FETCH_ASSOC);
+
+foreach ($announce_data as $item) {
+    $announce_list .= "
+        <mdui-list-item href=\"/archives/{$item['id']}\">{$item['title']}
+            <span slot=\"description\">{$item['modified']}</span>
+        </mdui-list-item>";
+ }
+$overview =  '<mdui-tabs value="overview" full-width placement="top">
+		<mdui-tab value="overview">站点概览</mdui-tab>
+	
+		<mdui-tab-panel slot="panel" value="overview">
+			<div class="text-center" style="padding-top:20px;">
+				<img src="/favicon.ico" style="width: 100px;" alt="avatar">
+				<p>' . __DATA__['title'] . '</p>
+                <div class="site-state-item">
+                    <a>
+                        <span>' . $DATABASE->query("SELECT COUNT(*) AS count FROM miku_api")->fetch()["count"] . '</span>
+                        <span>API数量</span>
+                    </a>
+                </div>
+                <div class="site-state-item">
+                    <a>
+                        <span>' . $DATABASE->query("SELECT COUNT(*) AS count FROM miku_access WHERE url LIKE '/api%'")->fetch()["count"] . '</span>
+                        <span>调用次数</span>
+                    </a>
+                </div>
+                <div class="site-state-item">
+                    <a>
+                        <span>' . $DATABASE->query("SELECT COUNT(DISTINCT ip) AS count FROM miku_access")->fetch()["count"] . '</span>
+                        <span>访问量</span>
+                    </a>
+                </div>
+			</div>
+		</mdui-tab-panel>
+	</mdui-tabs><div style="height: 20px;"></div>';
+?>
+<mdui-top-app-bar>
+    <mdui-button-icon icon="menu" class="menu"
+        onclick="$('mdui-navigation-drawer').attr('open', $('mdui-navigation-drawer').attr('open') ? false : true);"></mdui-button-icon>
+    <mdui-top-app-bar-title>
+        <span id="title_bar" onclick="window.location.href='/'"><?=__DATA__['title']?></span>
+    </mdui-top-app-bar-title>
+    <div style="flex-grow: 1"></div>
+    <mdui-tooltip placement="bottom" content="Search">
+        <mdui-button-icon href="javascript:search()" icon="search"></mdui-button-icon>
+    </mdui-tooltip>
+    <mdui-tooltip placement="bottom" content="API Rank">
+        <mdui-button-icon href="/rank" icon="equalizer"></mdui-button-icon>
+    </mdui-tooltip><mdui-tooltip placement="bottom" content="Theme Menu">
+        <mdui-button-icon href="javascript:theme_menu()" icon="color_lens"></mdui-button-icon>
+    </mdui-tooltip><mdui-dropdown>
+        <mdui-button-icon slot="trigger" icon="link"></mdui-button-icon>
+        <mdui-menu>
+            <?=implode('', array_map(function($link) {
+                    preg_match('/\[(.*?)\]/', $link, $title_match);
+                    preg_match('/\((.*?)\)/', $link, $link_match);
+                    return '<mdui-menu-item href="' . $link_match[1] . '" target="_blank">' . $title_match[1] . '</mdui-menu-item>';
+                }, preg_split('/[\r\n]+/', __DATA__['links'])))?>
+        </mdui-menu>
+    </mdui-dropdown>
+    <mdui-dropdown>
+        <mdui-button-icon slot="trigger" icon="more_vert"></mdui-button-icon>
+        <mdui-menu>
+            <mdui-menu-item>
+                <mdui-button href="/miku" icon="person">登录</mdui-button>
+            </mdui-menu-item>
+            <mdui-menu-item id="version">Version
+                <?=__DATA__['version']?>
+            </mdui-menu-item>
+        </mdui-menu>
+    </mdui-dropdown>
+</mdui-top-app-bar>
+<mdui-navigation-drawer class="drawer" close-on-overlay-click>
+    <mdui-button-icon icon="menu"
+        onclick="$('mdui-navigation-drawer').attr('open', $('mdui-navigation-drawer').attr('open') ? false : true);"
+        style="margin: 10px;"></mdui-button-icon>
+    <br>
+</mdui-navigation-drawer>
+<div class="banner text-center text-white">
+    <p id="banner-title" class="banner-title"><?=__DATA__["banner_title"]?></p>
+    <p id="banner-description" class="banner-description"><?=__DATA__['banner_description']?></p>
+</div>
+<style>
+:not(:defined) {
+    visibility: hidden;
+}
+</style>
+<script>
+    $(function(){$('.md').each(function () {
+        $(this).html(marked.parse($(this).text()));
+    });})
+</script>

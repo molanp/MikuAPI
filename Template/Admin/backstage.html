@@ -1,0 +1,134 @@
+<?php
+if (!tokentime($_COOKIE)) {
+    jump("/miku");
+}
+?>
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="/assets/js/jquery-3.7.1.min.js"></script>
+    <script src="https://registry.npmmirror.com/mdui/2.0.6/files/mdui.global.js"></script>
+    <script src="/assets/js/init.js"></script>
+    <script src="/assets/js/backstage.js"></script>
+    <script src="https://registry.npmmirror.com/tinymce/6.8.3/files/tinymce.min.js"></script>
+    <script src="https://registry.npmmirror.com/chart.js/4.4.2/files/dist/chart.umd.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/progressbar.js/1.1.1/progressbar.min.js"></script>
+    <title>后台管理</title>
+</head>
+
+<body style="overflow: hidden;">
+    <mdui-layout>
+        <mdui-top-app-bar>
+            <mdui-buutton-icon icon="home"></mdui-buutton-icon>
+            <mdui-top-app-bar-title>Web管理</mdui-top-app-bar-title>
+            <div style="flex-grow: 1"></div>
+            <mdui-tooltip placement="bottom" content="Theme Menu">
+                <mdui-button-icon href="javascript:theme_menu()" icon="color_lens"></mdui-button-icon>
+            </mdui-tooltip>
+            <mdui-dropdown>
+                <mdui-button-icon slot="trigger" icon="menu"></mdui-button-icon>
+                <mdui-menu>
+                    <mdui-menu-item>
+                        <mdui-avatar src="https://i.postimg.cc/hjWbHCx5/31ypeazn.png"></mdui-avatar>
+                        <?= $_COOKIE["user"] ?>
+                    </mdui-menu-item>
+                    <mdui-menu-item href="javascript:resetpassword()">
+                        <mdui-icon name="lock"></mdui-icon>
+                        修改密码
+                    </mdui-menu-item>
+                    <mdui-menu-item href="javascript:loginout()">
+                        <mdui-icon name="exit_to_app"></mdui-icon>
+                        登出
+                    </mdui-menu-item>
+                </mdui-menu>
+            </mdui-dropdown>
+        </mdui-top-app-bar>
+        <mdui-navigation-rail value="dash" contained divider class="is-pad nav">
+            <mdui-navigation-rail-item value="dash" icon="dashboard" href="/miku/">控制台</mdui-navigation-rail-item>
+            <mdui-navigation-rail-item value="api" icon="api" href="/miku/api">API管理</mdui-navigation-rail-item>
+            <mdui-navigation-rail-item value="option" icon="edit_note"
+                href="/miku/option">站点设置</mdui-navigation-rail-item>
+            <mdui-navigation-rail-item value="announce" icon="announcement"
+                href="/miku/announce">公告编辑</mdui-navigation-rail-item>
+            <mdui-navigation-rail-item value="log" icon="description" href="/miku/log">日志分析</mdui-navigation-rail-item>
+            <mdui-navigation-rail-item value="system" icon="settings_applications"
+                href="/miku/system">系统信息</mdui-navigation-rail-item>
+        </mdui-navigation-rail>
+        <mdui-layout-main style="height: calc(100vh - 1px);overflow: auto;">
+            <div id="data">
+                <div class="grid">
+                    <mdui-card>
+                        <div class="post-meta-detail">系统配置</div>
+                        <br>
+                        PHP版本：
+                        <?=__CONFIG__["php_version"]?>
+                        <br>
+                        PHP架构：
+                        <?=__CONFIG__["php_uname"]?>
+                        <br>
+                        PHP超时：
+                        <?=__CONFIG__["max_execution_time"]?>
+                        <br>
+                        PHP内存限制：
+                        <?=__CONFIG__["memory_limit"]?>
+                        <br>
+                        附件上传大小限制：
+                        <?=__CONFIG__["upload_max_filesize"]?>
+                        <br>
+                        Web服务器信息：
+                        <?=__CONFIG__["server_software"]?>
+                    </mdui-card>
+                    <mdui-card>
+                        <div class="post-meta-detail">操作栏</div>
+                        <br>
+                        <mdui-button
+                            onclick="sendData('/v2/info',{for: 'update'},function (responseData) {popups.dialog(responseData.data);});">更新设置列表</mdui-button>
+                        <mdui-button
+                            onclick="sendData('/v2/update',{},function (responseData) {popups.dialog(responseData.data);});">更新API列表</mdui-button>
+                        <br>
+
+                        <br>
+                        最新版本:<a id="latest_version" href="javascript:check_update()">点击获取</a>
+                        <div class="post-meta-detail">(当前版本
+                            <?=__DATA__["version"]?>)
+                        </div>
+                        <mdui-text-field readonly autosize label="更新内容" id="update_info"></mdui-text-field>
+                    </mdui-card>
+                    <mdui-card>
+                        <div class="post-meta-detail">热门API(TOP5)</div>
+                        <mdui-tabs value="main" full-width variant="secondary">
+                            <mdui-tab value="main" onclick="HotPlugin()">Year</mdui-tab>
+                            <mdui-tab value="main" onclick="HotPlugin('month')">Month</mdui-tab>
+                            <mdui-tab value="main" onclick="HotPlugin('week')">Week</mdui-tab>
+                            <mdui-tab value="main" onclick="HotPlugin('day')">Day</mdui-tab>
+                            <mdui-tab-panel slot="panel" value="main">
+                                <canvas id="hot-trend-chart"></canvas>
+                            </mdui-tab-panel>
+                        </mdui-tabs>
+                    </mdui-card>
+                    <mdui-card style="overflow-x: auto;white-space: nowrap;">
+                        <div class="post-meta-detail">调用趋势</div>
+                        <canvas id="api-trend-chart"></canvas>
+                    </mdui-card>
+                </div>
+            </div>
+        </mdui-layout-main>
+        <mdui-navigation-bar value="dash" label-visibility="labeled" class="not-pad nav">
+            <mdui-navigation-bar-item value="dash" icon="dashboard" href="/miku/">控制台</mdui-navigation-bar-item>
+            <mdui-navigation-bar-item value="api" icon="api" href="/miku/api">API管理</mdui-navigation-bar-item>
+            <mdui-navigation-bar-item value="option" icon="edit_note"
+                href="/miku/option">站点设置</mdui-navigation-bar-item>
+            <mdui-navigation-bar-item value="announce" icon="announcement"
+                href="/miku/announce">公告编辑</mdui-navigation-bar-item>
+            <mdui-navigation-bar-item value="log" icon="description" href="/miku/log">日志分析</mdui-navigation-bar-item>
+            <mdui-navigation-bar-item value="system" icon="settings_applications"
+                href="/miku/system">系统信息</mdui-navigation-bar-item>
+        </mdui-navigation-bar>
+    </mdui-layout>
+</body>
+
+</html>

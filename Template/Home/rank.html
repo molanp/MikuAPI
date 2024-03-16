@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" />
+    <meta name="renderer" content="webkit" />
+    <meta name="force-rendering" content="webkit" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <link rel="Shortcut Icon" href="/favicon.ico">
+    <link rel="bookmark" href="/favicon.ico" type="image/x-icon" />
+    <script src="/assets/js/jquery-3.7.1.min.js"></script>
+    <script src="https://registry.npmmirror.com/mdui/2.0.6/files/mdui.global.js"></script>
+    <script src="/assets/js/init.js"></script>
+    <script src="/assets/js/marked.min.js"></script>
+    <title>调用排行</title>
+</head>
+
+<body>
+    <?php include __TEMPLATE_DIR__ . DIRECTORY_SEPARATOR . "Home" . DIRECTORY_SEPARATOR . "public.html"?>
+    <div class="col-3">
+        <div class="left">
+            <mdui-card class="archives">
+                近期公告
+                <mdui-list style="width: 100%;max-height:30vh;overflow:auto">
+                    <?=$announce_list?>
+                </mdui-list>
+            </mdui-card>
+        </div>
+        <div class="center">
+            <mdui-card>
+                <noscript>
+                    <div style="text-align: center;margin-top: 10%;">
+                        <h4>
+                            Sorry, the web page requires a Javascript runtime environment, please allow you to run
+                            scripts
+                            or use a new version of the modern browser.
+                        </h4>
+                        <p>
+                            It is recommended to use
+                            <a href="https://www.microsoft.com/edge/download">
+                                Edge
+                            </a>
+                            modern browser.
+                        </p>
+                    </div>
+                </noscript>
+                <header class="post-header text-center">
+                    <a class="post-title" href="">API调用 TOP 10</a>
+                </header>
+                <div class="post-content mdui-table">
+                    <?php
+                    $table = "";
+                    $num = 0;
+                    $countsStmt = $DATABASE->prepare("SELECT miku_access.url, COUNT(*) AS count, miku_api.name FROM miku_access JOIN miku_api ON SUBSTRING(miku_access.url, 5) = miku_api.url_path WHERE miku_access.url LIKE '/api%' GROUP BY miku_access.url, miku_api.name ORDER BY count DESC LIMIT 10");
+                    $countsStmt->execute();
+                    $data = $countsStmt->fetchAll(PDO::FETCH_ASSOC);
+
+                    foreach ($data as $item => $value) {
+                        $num++;
+                        $table .= "
+                            <tr>
+                            <td>{$num}</td>
+                            <td><a href=\"/docs" . preg_replace("/\/api/", "", $value['url']) . "\">{$value['name']}</a></td>
+                            <td>{$value['count']}</td>
+                            </tr>
+                        ";
+                    }
+
+                    if (empty($table)) {
+                        $table = "
+                            <tr>
+                            <td>$</td>
+                            <td>无数据</td>
+                            <td>N/A</td>
+                            </tr>
+                        ";
+                    }
+
+                    echo '<table id="rank">
+                            <thead>
+                                    <tr>
+                                    <th>Rank</th>
+                                    <th>名称</th>
+                                    <th>调用次数</th>
+                                </tr>
+                            </thead>' . $table . '</table>';
+                ?>
+                </div>
+            </mdui-card>
+            <footer class="text-center">
+                <mdui-card>
+                    <span id="record">
+                        <?=__DATA__['record']?>
+                    </span>
+                    <span id="copyright">&copy;
+                        <?=__DATA__['copyright']?>
+                    </span>
+                </mdui-card>
+            </footer>
+        </div>
+        <div class="right">
+            <mdui-card class="overview">
+                <?=$overview?>
+            </mdui-card>
+        </div>
+    </div>
+</body>
+
+</html>

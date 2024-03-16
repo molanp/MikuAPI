@@ -1,0 +1,248 @@
+html {
+    margin: 0 auto;
+}
+
+body {
+    margin: 0 auto;
+    color: #525f7f;
+}
+
+.warn {
+    background-color: #fff3cd;
+    border-left: .25em solid #ffeeba !important;
+    color: #856404 !important;
+}
+
+.info {
+    background-color: #d1ecf1;
+    border-left: .25em solid #bee5eb !important;
+    color: #0c5460 !important;
+}
+
+.error {
+    background-color: rgb(var(--mdui-color-error-container));
+    border-left: .25em solid rgb(var(--mdui-color-error)) !important;
+    color: rgb(var(--mdui-color-on-error-container)) !important;
+}
+
+.tip {
+    background-color: #d4edda;
+    border-left: .25em solid #c3e6cb !important;
+    color: #155724 !important;
+}
+
+.mdui-theme-dark body {
+    color: #eeee;
+}
+
+a {
+    text-decoration: none;
+    outline: 0;
+    color: rgb(var(--mdui-color-primary));
+}
+
+.post-title {
+    font-size: 26px;
+    letter-spacing: .5px;
+    transition: all .35s ease;
+}
+
+.post-header {
+    margin-bottom: 20px;
+}
+
+.post-content {
+    line-height: 1.8;
+    margin-bottom: 10px;
+}
+
+.post-meta {
+    margin-top: 10px;
+}
+
+.post-meta-detail {
+    font-size: 14.5px;
+    line-height: 24px;
+    opacity: .8;
+    display: inline-block;
+}
+
+.post-meta-devide {
+    display: inline-block;
+    font-size: 14.5px;
+    line-height: 24px;
+    margin-left: 3px;
+    margin-right: 3px;
+    opacity: .5;
+    user-select: none;
+}
+
+mdui-card {
+    box-shadow: 0 .125rem .25rem rgba(0, 0, 0, .075) !important;
+    min-width: 0;
+    width: 100%;
+    word-wrap: break-word;
+    border: .0625rem solid rgba(0, 0, 0, .05);
+    border-radius: var(--mdui-shape-corner-small) !important;
+    background-color: rgb(var(--mdui-color-surface));
+    background-clip: border-box;
+    margin-bottom: 25px;
+    padding: 30px;
+    padding-bottom: 35px;
+    animation: card-show .25s ease-out;
+    transform-origin: center top;
+}
+
+@keyframes card-show {
+    0% {
+        opacity: 0;
+        transform: scale(.8);
+    }
+
+    100% {
+        opacity: 1;
+        transform: none;
+    }
+}
+
+mdui-card.mdui-table:not([style*="width"]) {
+    margin: 10px;
+    width: auto !important;
+}
+
+.fancybox__container {
+    z-index: 2300;
+}
+
+@font-face {
+    font-family: 'Material Icons';
+    font-style: normal;
+    font-weight: 400;
+    src: url("/assets/font/MaterialIcons.woff2") format('woff2');
+}
+
+.material-icons {
+    font-family: 'Material Icons';
+    font-weight: normal;
+    font-style: normal;
+    font-size: 24px;
+    line-height: 1;
+    letter-spacing: normal;
+    text-transform: none;
+    display: inline-block;
+    white-space: nowrap;
+    word-wrap: normal;
+    direction: ltr;
+    -webkit-font-smoothing: antialiased;
+}
+
+.grid {
+    display: grid;
+    justify-content: center;
+    gap: 20px;
+    padding: 10px;
+}
+
+#ToTop {
+    position: fixed;
+    bottom: 10vh;
+    right: 5vw;
+    display: none;
+    z-index: 2300
+}
+
+@media only screen and (min-width: 768px) {
+    .grid {
+        grid-template-columns: repeat(auto-fit, minmax(32%, 1fr));
+    }
+    .is-pad {
+		display: auto;
+	}
+	
+	.not-pad {
+		display: none;
+	}
+}
+
+@media only screen and (max-width: 767px) {
+    .grid {
+        grid-template-columns: 1fr;
+    }
+    .is-pad {
+		display: none;
+	}
+	
+	.not-pad {
+		display: auto;
+	}
+}
+
+.col-3 {
+    display: flex;
+}
+
+.left,
+.right {
+    padding-left: 10px;
+    padding-right: 10px;
+    top: 100px;
+    height: 10px;
+    position: sticky;
+}
+
+.center {
+    width: 0;
+}
+
+.left::-webkit-scrollbar,
+.right::-webkit-scrollbar {
+    display: none;
+}
+
+.text-center {
+    text-align: center !important;
+}
+
+.text-white {
+    color: #fff !important;
+}
+
+.banner-title {
+    padding-top: 100px;
+    font-size: 1.8em;
+    width: 100%;
+}
+
+.banner-description {
+    font-size: 16px;
+    padding: 10px;
+}
+
+.site-state-item {
+    display: inline-block;
+    border-left: 1px solid #eee;
+    padding-left: 5px;
+}
+
+.line {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+::-webkit-scrollbar-track {
+    background-color: transparent;
+    border-radius: 2em;
+}
+
+::-webkit-scrollbar {
+    width: 0.3rem;
+    height: 8px;
+}
+
+::-webkit-scrollbar-corner {
+    background-color: transparent;
+}
+
+.hljs {
+    background: none;
+}
