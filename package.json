@@ -1,0 +1,18 @@
+{
+  "dependencies": {
+    "docsify-cli": "^4.4.4"
+  },
+  "scripts": {
+    "start": "docsify start",
+    "serve": "docsify serve ./"
+  },
+  "docsify": {
+    "config": {
+      "basePath": "https://molanp.github.io/MikuAPI/",
+      "loadSidebar": true,
+      "loadNavbar": true,
+      "coverpage": true,
+      "name": "MikuAPI"
+    }
+  }
+}
