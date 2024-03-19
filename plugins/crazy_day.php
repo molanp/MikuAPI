@@ -1,13 +1,17 @@
 <?php
-class crazy_day
+namespace crazy_day;
+class PluginMeta
 {
-    private $kfc;
-    public const name = '天天疯狂';
+	public const name = '天天疯狂';
     public const version = '1.0';
     public const profile = '一键获取疯狂星期四文案';
     public const method = 'GET';
     public const author = 'molanp';
     public const request = ['day' => "要疯狂的星期<br>支持以下项`月/一`, `火/二`, `水/三`, `木/四`, `金/五`, `土/六`, `日`<br>为空默认为`四`"];
+}
+class PluginHandler
+{
+    private $kfc;
     public function __construct()
     {
         $this->kfc = [

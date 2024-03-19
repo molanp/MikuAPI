@@ -1,5 +1,6 @@
 <?php
-class xb
+namespace xb;
+class PluginMeta
 {
     public const name = '喜/悲报生成器';
     public const version = '1.0';
@@ -11,6 +12,9 @@ class xb
         "*content" => "喜/悲报内容",
         "type" => "生成类型，`0`为喜报，`1`为悲报，默认为`0`"
     ];
+}
+class PluginHandler
+{
     private function drawPost($text = "", $imageMode = 0)
     {
         if (mb_strlen($text) > 100) {

@@ -1,13 +1,17 @@
 <?php
-class cp
+namespace cp;
+class PluginMeta
 {
-    private $cp;
-    public const name = 'cp小故事';
+	public const name = 'cp小故事';
     public const version = '1.0';
     public const profile = '一键获取cp文章';
     public const method = 'GET';
     public const author = 'molanp';
     public const request = ['boy' => "攻", 'girl' => "受"];
+}
+class PluginHandler
+{
+    private $cp;
     public function __construct()
     {
         $this->cp = [

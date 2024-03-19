@@ -1,12 +1,16 @@
 <?php
-class what_eat
+namespace what_eat;
+class PluginMeta
 {
-    private $what_eat;
     public const name = '今天吃什么';
     public const version = '1.0';
     public const profile = '一键获取今天要吃的菜名';
     public const method = 'GET';
     public const author = 'molanp';
+}
+class PluginHandler
+{
+    private $what_eat;
     public function __construct()
     {
         $this->what_eat = [

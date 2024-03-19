@@ -1,5 +1,6 @@
 <?php
-class ai
+namespace ai;
+class PluginMeta
 {
     public const name = 'AI回复';
     public const version = '1.0';
@@ -12,6 +13,9 @@ class ai
     public const return_par = [
         "data" => "ai给你的回复"
     ];
+}
+class PluginHandler
+{
     private function findMostSimilarWord($input, $dictionary)
     {
         $bestMatch = "";

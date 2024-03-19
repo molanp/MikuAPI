@@ -1,7 +1,8 @@
 <?php
-class ascii
+namespace ascii;
+class PluginMeta
 {
-    public const name = 'ASCII字符画生成';
+	public const name = 'ASCII字符画生成';
     public const version = '1.0';
     public const profile = '上传图片生成字符画';
     public const method = 'PUT';
@@ -13,6 +14,9 @@ class ascii
         $image = @imagecreatefromstring($data);
         return ($image !== false);
     }
+}
+class PluginHandler
+{
     public function init()
     {
         $input = file_get_contents('php://input');

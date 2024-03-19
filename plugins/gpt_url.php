@@ -1,5 +1,6 @@
 <?php
-class gpt_url
+namespace gpt_url;
+class PluginMeta
 {
     public const name = 'GPT 镜像';
     public const version = '1.0';
@@ -10,7 +11,9 @@ class gpt_url
         'count' => 'gpt镜像url数量',
         'default' => '可用gpt镜像url列表'
     ];
-
+}
+class PluginHandler
+{
     public function init()
     {
         $default = [];

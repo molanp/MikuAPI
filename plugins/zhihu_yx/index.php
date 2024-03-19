@@ -1,5 +1,6 @@
 <?php
-class zhihu_yx
+namespace zhihu_yx;
+class PluginMeta
 {
     public const name = '知乎盐选';
     public const version = '1.0';
@@ -16,6 +17,9 @@ class zhihu_yx
         "content" => "文章内容",
         "createTime" => "文章保存时间",
     ];
+}
+class PluginHandler
+{
     private function fetchArticleById($id)
     {
         $database = __DIR__ . "/zhihu.db";

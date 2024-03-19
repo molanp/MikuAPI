@@ -1,5 +1,6 @@
 <?php
-class tian
+namespace tian;
+class PluginMeta
 {
     public const name = '舔狗日记';
     public const version = '20231104';
@@ -9,6 +10,9 @@ class tian
     public const response = [
         "data" => "舔狗语录"
     ];
+}
+class PluginHandler
+{
     public function init()
     {
         $data = json(file_get_contents(__DIR__ . "/tgrj.json"))["data"];

@@ -1,5 +1,6 @@
 <?php
-class wbtop
+namespace wbtop;
+class PluginMeta
 {
     public const name = '微博热搜';
     public const version = '1.0';
@@ -13,6 +14,9 @@ class wbtop
         "hot_word" => "热搜",
         "url" => "话题链接"
     ];
+}
+class PluginHandler
+{
     public function init()
     {
         $wbtop = (new requests())->get("https://weibo.com/ajax/side/hotSearch")->json()["data"]["realtime"];

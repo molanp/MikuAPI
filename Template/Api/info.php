@@ -7,8 +7,8 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
             $urlPath = $_GET["url"] ?? "";
             preg_match("#/docs/(.*)#", $urlPath, $urlPath);
             $urlPath = addSlashIfNeeded($urlPath[1] ?? "");
-            $statement = $DATABASE->prepare("SELECT name, version, author, method, profile, request, response, type, status, time FROM miku_api WHERE url_path = :urlPath");
-            $statement->execute([":urlPath" => $urlPath]);
+            $statement = $DATABASE->prepare("SELECT name, version, author, method, profile, request, response, type, status, time FROM miku_api WHERE url = :url");
+            $statement->execute([":url" => $urlPath]);
             $result = $statement->fetch(PDO::FETCH_ASSOC);
             $data = [];
             if ($result) {
@@ -29,7 +29,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
             break;
         case "status":
             $conname = [];
-            $query = $DATABASE->prepare("SELECT name, top, uuid, type, status, author, version, class FROM miku_api ORDER BY top DESC, name");
+            $query = $DATABASE->prepare("SELECT name, top, uuid, type, status, author, version, namespace FROM miku_api ORDER BY top DESC, name");
             $query->execute();
             while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
                 array_push($conname, $row);
@@ -43,12 +43,12 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
             }
             $pages = ($pages - 1) * $limit;
 
-            $query = $DATABASE->prepare("SELECT type, top, name, author, url_path, profile, status, time FROM miku_api ORDER BY top DESC, name LIMIT :limit OFFSET :pages");
+            $query = $DATABASE->prepare("SELECT type, top, name, author, url, profile, status, time FROM miku_api ORDER BY top DESC, name LIMIT :limit OFFSET :pages");
             $query->execute([":limit" => $limit, ":pages" => $pages]);
             $conname = [];
             while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
-                $url_path = $row["url_path"];
-                $stmt = $DATABASE->prepare("SELECT COUNT(*) AS count FROM miku_access WHERE url = '/api$url_path'");
+                $url_path = $row["url"];
+                $stmt = $DATABASE->prepare("SELECT COUNT(*) AS count FROM miku_access WHERE url = '/api$url'");
                 $stmt->execute();
                 $conname[$row["name"]] = [
                     "author" => $row["author"],

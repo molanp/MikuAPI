@@ -96,7 +96,7 @@ function tokentime($data)
 function get_name($data, $array=false)
 {
     global $DATABASE;
-    if (!$DATABASE) return null;
+    if (!empty($DATABASE)) return null;
     $data = $array ? ($data["token"] ?? $data["apikey"] ?? "miku") : $data;
     $stmt = $DATABASE->prepare("SELECT username FROM miku_users WHERE token = :token OR apikey = :token");
     $stmt->execute([':token' => $data]);

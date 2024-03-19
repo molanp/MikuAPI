@@ -21,12 +21,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && tokentime($_POST)) {
             $absolutePath = realpath(__ROOT_DIR__ . DIRECTORY_SEPARATOR . $pluginFilePath);
             $file = basename($absolutePath);
             $dir = dirname($absolutePath);
-            $pluginClassName = pathinfo($file, PATHINFO_FILENAME);
-            if (!class_exists($pluginClassName) && is_file($dir . DIRECTORY_SEPARATOR . $pluginClassName . ".php")) {
-                $pluginClassName = basename($dir);
+            $pluginNameSpace = pathinfo($file, PATHINFO_FILENAME);
+            if (!class_exists($pluginNameSpace) && is_file($dir . DIRECTORY_SEPARATOR . $pluginNameSpace . ".php")) {
+                $pluginNameSpace = basename($dir);
             }
-            if (class_exists($pluginClassName)) {
-                $type = defined("$pluginClassName::type") ? $pluginClassName::type : "一些工具";
+            if (class_exists("$pluginNameSpace\PluginHandler") && class_exists("$pluginNameSpace\PluginMeta")) {
+                $type = defined("$pluginNameSpace\PluginMeta::type") ? constant("$pluginNameSpace\PluginMeta::type") : "一些工具";
                 $path = addSlashIfNeeded(str_replace(
                     DIRECTORY_SEPARATOR,
                     "/",
@@ -44,18 +44,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && tokentime($_POST)) {
                         )
                     )
                 ));
-                $selectQuery = $DATABASE->prepare("SELECT uuid FROM miku_api WHERE file_path = :path");
+                $selectQuery = $DATABASE->prepare("SELECT uuid FROM miku_api WHERE path = :path");
                 $selectQuery->execute([":path" => $absolutePath]);
                 if ($result = $selectQuery->fetch(PDO::FETCH_ASSOC)) {
                     $uuid = $result["uuid"];
                     $data = [
-                        "name" => $pluginClassName::name,
-                        "version" => defined("$pluginClassName::version") ? $pluginClassName::version : "1.0",
-                        "author" => defined("$pluginClassName::author") ? $pluginClassName::author : "Unknown",
-                        "method" => defined("$pluginClassName::method") ? $pluginClassName::method : "ANY",
-                        "profile" => defined("$pluginClassName::profile") ? $pluginClassName::profile : "",
-                        "request" => re_par(defined("$pluginClassName::request") ? $pluginClassName::request : []),
-                        "response" => re_par(defined("$pluginClassName::response") ? $pluginClassName::response : []),
+                        "name" => constant("$pluginNameSpace\PluginMeta::name"),
+                        "version" => defined("$pluginNameSpace\PluginMeta::version") ? constant("$pluginNameSpace\PluginMeta::version") : "1.0",
+                        "author" => defined("$pluginNameSpace\PluginMeta::author") ? constant("$pluginNameSpace\PluginMeta::author") : "Unknown",
+                        "method" => defined("$pluginNameSpace\PluginMeta::method") ? constant("$pluginNameSpace\PluginMeta::method") : "ANY",
+                        "profile" => defined("$pluginNameSpace\PluginMeta::profile") ? constant("$pluginNameSpace\PluginMeta::profile") : "",
+                        "request" => re_par(defined("$pluginNameSpace\PluginMeta::request") ? constant("$pluginNameSpace\PluginMeta::request") : []),
+                        "response" => re_par(defined("$pluginNameSpace\PluginMeta::response") ? constant("$pluginNameSpace\PluginMeta::response") : []),
                         "type" => $type,
                         "time" => date("Y-m-d H:i:s", time())
                     ];
@@ -74,16 +74,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && tokentime($_POST)) {
                     );
                     $data = [
                         "uuid" => $uuid,
-                        "name" => $pluginClassName::name,
-                        "version" => defined("$pluginClassName::version") ? $pluginClassName::version : "1.0",
-                        "author" => defined("$pluginClassName::author") ? $pluginClassName::author : "Unknown",
-                        "method" => defined("$pluginClassName::method") ? $pluginClassName::method : "ANY",
-                        "profile" => defined("$pluginClassName::profile") ? $pluginClassName::profile : "",
-                        "request" => re_par(defined("$pluginClassName::request") ? $pluginClassName::request : []),
-                        "response" => re_par(defined("$pluginClassName::response") ? $pluginClassName::response : []),
-                        "class" => $pluginClassName,
-                        "url_path" => $path,
-                        "file_path" => $absolutePath,
+                        "name" => constant("$pluginNameSpace\PluginMeta::name"),
+                        "version" => defined("$pluginNameSpace\PluginMeta::version") ? constant("$pluginNameSpace\PluginMeta::version") : "1.0",
+                        "author" => defined("$pluginNameSpace\PluginMeta::author") ? constant("$pluginNameSpace\PluginMeta::author") : "Unknown",
+                        "method" => defined("$pluginNameSpace\PluginMeta::method") ? constant("$pluginNameSpace\PluginMeta::method") : "ANY",
+                        "profile" => defined("$pluginNameSpace\PluginMeta::profile") ? constant("$pluginNameSpace\PluginMeta::profile") : "",
+                        "request" => re_par(defined("$pluginNameSpace\PluginMeta::request") ? constant("$pluginNameSpace\PluginMeta::request") : []),
+                        "response" => re_par(defined("$pluginNameSpace\PluginMeta::response") ? constant("$pluginNameSpace\PluginMeta::response") : []),
+                        "namespace" => $pluginNameSpace,
+                        "url" => $path,
+                        "path" => $absolutePath,
                         "type" => $type,
                         "top" => "false",
                         "status" => "true"
@@ -91,7 +91,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && tokentime($_POST)) {
                     Insert($DATABASE, "miku_api", $data);
                 }
             } else {
-                (new logger())->warn("插件文件缺少主类，文件路径：$pluginFilePath ，文件名：$file");
+                (new logger())->warn("插件文件缺少元数据，文件路径：$pluginFilePath ，文件名：$file");
             }
         }
     }

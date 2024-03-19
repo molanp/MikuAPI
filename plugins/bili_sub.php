@@ -1,5 +1,6 @@
 <?php
-class bili_sub
+namespace bili_sub;
+class PluginMeta
 {
     public const name = "bilibili视频解析";
     public const version = "1.0";
@@ -30,6 +31,9 @@ class bili_sub
             "like" => "获赞数"
         ]
     ];
+}
+class PluginHandler
+{
     public function init($request)
     {
         if (isset($request["url"])) {

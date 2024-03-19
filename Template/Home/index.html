@@ -49,13 +49,13 @@
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
             $count[$row["url"]] = $row["count"];
         }
-        $query = $DATABASE->prepare("SELECT name, top, type, author, time, url_path, profile 
+        $query = $DATABASE->prepare("SELECT name, top, type, author, time, url, profile 
         FROM miku_api 
         ORDER BY top DESC, name
         LIMIT 12 OFFSET 0");
         $query->execute();
         while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
-            $count = $count["/api" . $row["url_path"]] ?? 0;
+            $count = $count["/api" . $row["url"]] ?? 0;
             $top_str = ($row["top"] == "true") ? '
             <div class="post-meta-devide">|</div>
             <div class="post-meta-detail">
@@ -63,9 +63,9 @@
             </div>
             ' : '';            
             echo '
-                <mdui-card class="text-center" href="docs' . $row['url_path'] . '">
+                <mdui-card class="text-center" href="docs' . $row['url'] . '">
                 <header class="post-header text-center">
-                    <a class="post-title" href="docs' . $row['url_path'] . '">' . $row["name"] . '</a>' . '
+                    <a class="post-title" href="docs' . $row['url'] . '">' . $row["name"] . '</a>' . '
                     <div class="post-meta">
                         <div class="post-meta-detail">
                             <mdui-icon name="account_circle" style="font-size: 14.5px;"></mdui-icon>' . $row["author"] . '

@@ -1,5 +1,6 @@
 <?php
-class bilitop
+namespace bilitop;
+class PluginMeta
 {
     public const name = 'B站热门视频';
     public const version = '1.0';
@@ -12,6 +13,9 @@ class bilitop
             "url" => "视频链接"
         ]
     ];
+}
+class PluginHandler
+{
     public function init()
     {
         $bilitop = (new requests())->get("https://api.bilibili.com/x/web-interface/popular")->json()["data"]["list"];
