@@ -18,7 +18,7 @@
 |`response`|[]|数组化的响应参数|
 |`type`|一些工具|插件分类|
 
-!> 插件类名必须与插件文件名或外部文件夹名称相同<br>否则该插件不会被加载并记入日志
+!> 插件命名空间必须与插件文件名或外部文件夹名称相同<br>否则该插件不会被加载并记入日志
 
 !> 自定义用户插件建议放入`extensive_plugins`文件夹<br>`plugins`文件夹内文件每次更新会被删除
 
@@ -29,7 +29,8 @@
 ```php
 <?php
 # name_generator.php
-class name_generator
+namespace name_generator;
+class PluginMeta
 {
     public const name = '亚文化取名机';
     public const version = '1.0';
@@ -39,12 +40,15 @@ class name_generator
     public const response = [
         "data" => "你的亚文化名字"
     ];
+}
+class PluginHandler
+{
     public function init()
     {
-        $el1 = ["废墟", ..., "无聊"];
+        $el1 = ["废墟", "无聊"];
         $el2 = ["之", ""];
-        $el3 = ["小丑", ..., "放射性"];
-        $el4 = ["天使",...,"糖"];
+        $el3 = ["小丑","放射性"];
+        $el4 = ["天使", "糖"];
         _return_($el1[array_rand($el1)] . $el2[array_rand($el2)] . $el3[array_rand($el3)] . $el4[array_rand($el4)]);
     }
 }
@@ -55,15 +59,19 @@ class name_generator
 ```php
 <?php
 # name_generator.php
-class name_generator
+namespace name_generator;
+class PluginMeta
 {
-    const name = '亚文化取名机';
-    function init()
+    public const name = '亚文化取名机';
+}
+class PluginHandler
+{
+    public function init()
     {
-        $el1 = ["废墟", ..., "无聊"];
+        $el1 = ["废墟", "无聊"];
         $el2 = ["之", ""];
-        $el3 = ["小丑", ..., "放射性"];
-        $el4 = ["天使",...,"糖"];
+        $el3 = ["小丑","放射性"];
+        $el4 = ["天使", "糖"];
         _return_($el1[array_rand($el1)] . $el2[array_rand($el2)] . $el3[array_rand($el3)] . $el4[array_rand($el4)]);
     }
 }
@@ -78,9 +86,13 @@ class name_generator
 #   |---demo2.php
 
 #index.php
-class demo
+namespace demo
+class PluginMeta
 {
     public const name = 'demo1';
+}
+class PluginHandler
+{
     public function init()
     {
         ...
@@ -89,9 +101,13 @@ class demo
 }
 
 #demo2.php
-class demo2
+namespace demo2
+class PluginMeta
 {
     public const name = 'demo2';
+}
+class PluginHandler
+{
     public function init()
     {
         ...
