@@ -102,7 +102,7 @@ function load() {
               list += `<mdui-card id="${plu.uuid}" style="margin-bottom: 0px;width: 95%;">
               <div class="post-title">${plu.name} <div class="post-meta-detail">v${plu.version}</div>${top_str}</div>
               <div class="post-meta">
-                <div class="post-meta-detail">${plu.namespace} @${plu.author}</div>
+                <div class="post-meta-detail">${plu.class} @${plu.author}</div>
                 <div class="post-meta-devide">|</div>
                 <div class="post-meta-detail"><a href="javascript:top_('${plu.uuid}')">置顶/取消置顶</a></div>
               </div>

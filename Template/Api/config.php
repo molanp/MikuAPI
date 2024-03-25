@@ -4,7 +4,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (isset($data["token"])) {
         if (tokentime($data)) {
             $data = (new Config())->getAll();
-            _return_($data);
+            return_json($data);
         } else {
             code(401);
         }

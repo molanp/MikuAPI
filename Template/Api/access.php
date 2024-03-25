@@ -4,14 +4,14 @@ switch ($_SERVER["REQUEST_METHOD"]) {
         if (tokentime($_POST)) {
             $page = $_POST["page"] ?? 1;
             if (!is_numeric($page) || $page <= 0 || floor($page) != $page) {
-                _return_("不合法的页码", 400);
+                return_json("不合法的页码", 400);
             }
             $page = ($page - 1) * 20;
             $stmt = $DATABASE->prepare("SELECT * FROM miku_access ORDER BY id DESC LIMIT 20 OFFSET :page");
             $stmt->bindValue(':page', (int)$page, PDO::PARAM_INT);
             $stmt->execute();
             $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
-            _return_($data);
+            return_json($data);
         } else {
             code(401);
         }

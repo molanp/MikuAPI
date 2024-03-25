@@ -96,7 +96,7 @@ function tokentime($data)
 function get_name($data, $array=false)
 {
     global $DATABASE;
-    if (!empty($DATABASE)) return null;
+    if (!$DATABASE) return null;
     $data = $array ? ($data["token"] ?? $data["apikey"] ?? "miku") : $data;
     $stmt = $DATABASE->prepare("SELECT username FROM miku_users WHERE token = :token OR apikey = :token");
     $stmt->execute([':token' => $data]);
@@ -202,7 +202,7 @@ function parseTable($prefix, $key, &$table)
  * @param bool|string $location 是否重定向，如果不为false，则重定向到$content内的链接
  * @return void
  */
-function _return_($content, $status = 200, $location = false)
+function return_json($content, $status = 200, $location = false)
 {
     header('Access-Control-Allow-Origin: *');
     header('Access-Control-Allow-Methods: *');
@@ -230,7 +230,7 @@ function handle_check($name)
     $query->execute();
     $status = $query->fetchColumn();
     if ($status == 'false') {
-        _return_("This API already closed", 406);
+        return_json("This API already closed", 406);
     } else {
         return true;
     }
@@ -344,7 +344,7 @@ function RequestLimit($limit)
 
     $count = $count + 1;
     if ($count > $quantity && $ip !== "127.0.0.1" && $ip !== "::1") {
-        _return_("Too Many Requests", 429);
+        return_json("Too Many Requests", 429);
     }
 }
 
@@ -453,7 +453,7 @@ function code($code)
         505 => 'HTTP Version Not Supported'
     ];    
     if (array_key_exists($code, $data)) {
-        _return_($data[$code], $code);
+        return_json($data[$code], $code);
     } else {
         throw new Exception("Unknown HTTP Code.");
     }

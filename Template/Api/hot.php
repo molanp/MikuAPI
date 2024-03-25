@@ -13,7 +13,7 @@ switch ($_SERVER["REQUEST_METHOD"]) {
             $countsStmt->execute();
             $data = $countsStmt->fetchAll(PDO::FETCH_ASSOC);
         }
-        _return_($data);
+        return_json($data);
     case "POST":
         if (tokentime($_POST)) {
             $data = [];
@@ -39,7 +39,7 @@ switch ($_SERVER["REQUEST_METHOD"]) {
                 $stmt->execute();
                 $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
             }
-            _return_($data);
+            return_json($data);
         } else {
             code(401);
         }

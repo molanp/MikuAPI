@@ -1,6 +1,5 @@
 <?php
-namespace xb;
-class PluginMeta
+class xb
 {
     public const name = '喜/悲报生成器';
     public const version = '1.0';
@@ -12,13 +11,10 @@ class PluginMeta
         "*content" => "喜/悲报内容",
         "type" => "生成类型，`0`为喜报，`1`为悲报，默认为`0`"
     ];
-}
-class PluginHandler
-{
     private function drawPost($text = "", $imageMode = 0)
     {
-        if (mb_strlen($text) > 100) {
-            _return_("字数超出最大限制", 400);
+        if (mb_strlen($text) > 300) {
+            return_json("字数超出最大限制", 400);
         }
         $happy = __DIR__ . "/happy.jpg";
         $sad = __DIR__ . "/sad.jpg";

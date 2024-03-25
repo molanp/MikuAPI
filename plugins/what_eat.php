@@ -1,16 +1,12 @@
 <?php
-namespace what_eat;
-class PluginMeta
+class what_eat
 {
+    private $what_eat;
     public const name = '今天吃什么';
     public const version = '1.0';
     public const profile = '一键获取今天要吃的菜名';
     public const method = 'GET';
     public const author = 'molanp';
-}
-class PluginHandler
-{
-    private $what_eat;
     public function __construct()
     {
         $this->what_eat = [
@@ -184,6 +180,6 @@ class PluginHandler
     public function init()
     {
         $what_eat = $this->what_eat;
-        _return_($what_eat[array_rand($what_eat)]);
+        return_json($what_eat[array_rand($what_eat)]);
     }
 }

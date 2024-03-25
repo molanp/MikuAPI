@@ -8,7 +8,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $pwd = hash("sha256", $data["new"]);
             if (tokentime($_POST)) {
                 if ($pwd !== hash("sha256", $data["again"])) {
-                    _return_("两次输入密码不同", 406);
+                    return_json("两次输入密码不同", 406);
                 } else {
                     $stmt = $DATABASE->prepare("UPDATE miku_users SET password = :password WHERE token = :token or apikey = :token");
                     $stmt->bindParam(':password', $pwd);
@@ -35,12 +35,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     $stmt->bindParam(':token', $hashedToken);
                     $stmt->bindParam(':username', $usr);
                     $stmt->execute();
-                    _return_([
+                    return_json([
                         "user" => $data["username"],
                         "token" => $hashedToken
                     ]);
                 } else {
-                    _return_("账号或密码错误", 400);
+                    return_json("账号或密码错误", 400);
                 }
             } else {
                 code(400);

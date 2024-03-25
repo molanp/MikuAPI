@@ -26,7 +26,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
         $data["name"] = php_uname('s');
         $data["version"] = php_uname('r');
         $data["all"] = php_uname();
-        _return_($data);
+        return_json($data);
     } else {
         code(401);
     }

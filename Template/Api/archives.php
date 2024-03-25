@@ -5,7 +5,7 @@ switch ($_SERVER["REQUEST_METHOD"]) {
         if (strcasecmp($id, "All") == 0) {
             $perpage = $_REQUEST["perpage"] ?? 20;
             if (!is_numeric($perpage) || intval($perpage) != $perpage) {
-                _return_("invalid_perpage: The perpage must be a number.");
+                return_json("invalid_perpage: The perpage must be a number.");
             }
             if ($perpage < 1 || $perpage > 101) {
                 $perpage = 20;
@@ -16,11 +16,11 @@ switch ($_SERVER["REQUEST_METHOD"]) {
             } else {
                 $result = $DATABASE->query("SELECT id, title, date, modified FROM miku_archives ORDER BY id DESC LIMIT $perpage");
             }
-            _return_($result->fetchAll(PDO::FETCH_ASSOC));
+            return_json($result->fetchAll(PDO::FETCH_ASSOC));
         } else {
             $result = $DATABASE->prepare("SELECT title, content FROM miku_archives WHERE id = :id");
             $result->execute([":id" => $id]);
-            _return_($result->fetch(PDO::FETCH_ASSOC));
+            return_json($result->fetch(PDO::FETCH_ASSOC));
         }
         break;
     case "DELETE":
@@ -47,7 +47,7 @@ switch ($_SERVER["REQUEST_METHOD"]) {
                 ":author" => get_name($_REQUEST["token"]),
                 ":type" => "announce",
             ]);
-            _return_("发布成功");
+            return_json("发布成功");
         } else if (is_numeric($_REQUEST["id"])) {
             $result = $DATABASE->prepare("UPDATE miku_archives SET title = :title, content = :content WHERE id = :id");
             $result->execute([
@@ -55,9 +55,9 @@ switch ($_SERVER["REQUEST_METHOD"]) {
                 ":content" => $_REQUEST["content"],
                 ":id" => $_REQUEST["id"]
             ]);
-            _return_("修改成功");
+            return_json("修改成功");
         } else {
-            _return_("不合法的ID", 400);
+            return_json("不合法的ID", 400);
         }
         break;
     default:

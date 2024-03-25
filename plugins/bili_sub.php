@@ -1,6 +1,5 @@
 <?php
-namespace bili_sub;
-class PluginMeta
+class bili_sub
 {
     public const name = "bilibili视频解析";
     public const version = "1.0";
@@ -31,9 +30,6 @@ class PluginMeta
             "like" => "获赞数"
         ]
     ];
-}
-class PluginHandler
-{
     public function init($request)
     {
         if (isset($request["url"])) {
@@ -73,6 +69,6 @@ class PluginHandler
         } else {
             $data = ["无效的链接", 400];
         };
-        _return_($data[0], $data[1]);
+        return_json($data[0], $data[1]);
     }
 }

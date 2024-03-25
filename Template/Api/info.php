@@ -7,8 +7,8 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
             $urlPath = $_GET["url"] ?? "";
             preg_match("#/docs/(.*)#", $urlPath, $urlPath);
             $urlPath = addSlashIfNeeded($urlPath[1] ?? "");
-            $statement = $DATABASE->prepare("SELECT name, version, author, method, profile, request, response, type, status, time FROM miku_api WHERE url = :url");
-            $statement->execute([":url" => $urlPath]);
+            $statement = $DATABASE->prepare("SELECT name, version, author, method, profile, request, response, type, status, time FROM miku_api WHERE url_path = :urlPath");
+            $statement->execute([":urlPath" => $urlPath]);
             $result = $statement->fetch(PDO::FETCH_ASSOC);
             $data = [];
             if ($result) {
@@ -20,7 +20,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
                 $count = $stmt->fetch(PDO::FETCH_ASSOC)["count"] ?? 0;
                 $conname["count"] = $count;
             } else {
-                _return_("Not Found.", 404);
+                return_json("Not Found.", 404);
             }
             break;
         case "options":
@@ -29,7 +29,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
             break;
         case "status":
             $conname = [];
-            $query = $DATABASE->prepare("SELECT name, top, uuid, type, status, author, version, namespace FROM miku_api ORDER BY top DESC, name");
+            $query = $DATABASE->prepare("SELECT name, top, uuid, type, status, author, version, class FROM miku_api ORDER BY top DESC, name");
             $query->execute();
             while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
                 array_push($conname, $row);
@@ -39,16 +39,16 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
             $limit = 12;
             $pages = $_GET["page"] ?? 1;
             if (!is_numeric($pages) || $pages <= 0 || floor($pages) != $pages) {
-                _return_("不合法的页码", 400);
+                return_json("不合法的页码", 400);
             }
             $pages = ($pages - 1) * $limit;
 
-            $query = $DATABASE->prepare("SELECT type, top, name, author, url, profile, status, time FROM miku_api ORDER BY top DESC, name LIMIT :limit OFFSET :pages");
+            $query = $DATABASE->prepare("SELECT type, top, name, author, url_path, profile, status, time FROM miku_api ORDER BY top DESC, name LIMIT :limit OFFSET :pages");
             $query->execute([":limit" => $limit, ":pages" => $pages]);
             $conname = [];
             while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
-                $url_path = $row["url"];
-                $stmt = $DATABASE->prepare("SELECT COUNT(*) AS count FROM miku_access WHERE url = '/api$url'");
+                $url_path = $row["url_path"];
+                $stmt = $DATABASE->prepare("SELECT COUNT(*) AS count FROM miku_access WHERE url = '/api$url_path'");
                 $stmt->execute();
                 $conname[$row["name"]] = [
                     "author" => $row["author"],
@@ -63,7 +63,7 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
 
             break;
     }
-    _return_($conname);
+    return_json($conname);
 } elseif ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (tokentime($_POST)) {
         $for = $_POST["for"] ?? NULL;
@@ -108,5 +108,5 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     } else {
         code(401);
     }
-    _return_($conname);
+    return_json($conname);
 }

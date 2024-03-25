@@ -6,5 +6,5 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
     while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
         array_push($data, ["id" => $row["id"], "title" => $row["title"], "date" => $row["date"]]);
     }
-    _return_($data);
+    return_json($data);
 }

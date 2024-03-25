@@ -1,6 +1,5 @@
 <?php
-namespace zhihu_yx;
-class PluginMeta
+class zhihu_yx
 {
     public const name = '知乎盐选';
     public const version = '1.0';
@@ -17,9 +16,6 @@ class PluginMeta
         "content" => "文章内容",
         "createTime" => "文章保存时间",
     ];
-}
-class PluginHandler
-{
     private function fetchArticleById($id)
     {
         $database = __DIR__ . "/zhihu.db";
@@ -123,7 +119,7 @@ class PluginHandler
         $title = $get["title"] ?? null;
 
         if ($id && $title) {
-            _return_(["error" => "Cannot search by both id and title"], 400);
+            return_json(["error" => "Cannot search by both id and title"], 400);
         }
 
         if ($id) {
@@ -134,6 +130,6 @@ class PluginHandler
             $result = $this->fetchRandomArticle();
         }
 
-        _return_($result["data"], $result["code"]);
+        return_json($result["data"], $result["code"]);
     }
 }

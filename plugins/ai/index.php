@@ -1,6 +1,5 @@
 <?php
-namespace ai;
-class PluginMeta
+class ai
 {
     public const name = 'AI回复';
     public const version = '1.0';
@@ -13,9 +12,6 @@ class PluginMeta
     public const return_par = [
         "data" => "ai给你的回复"
     ];
-}
-class PluginHandler
-{
     private function findMostSimilarWord($input, $dictionary)
     {
         $bestMatch = "";
@@ -90,6 +86,6 @@ class PluginHandler
         if (empty($data)) {
             $data = $budong[array_rand($budong)];
         }
-        _return_($data);
+        return_json($data);
     }
 }

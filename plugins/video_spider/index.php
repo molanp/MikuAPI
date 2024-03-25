@@ -1,6 +1,5 @@
 <?php
-namespace video_spider;
-class PluginMeta
+class video_spider
 {
     public const name = '聚合短视频去水印';
     public const version = '1.0';
@@ -48,9 +47,6 @@ class PluginMeta
         'city' => '所在城市',
         'uid' => '作者id'
     ];
-}
-class PluginHandler
-{
     public function init($request)
     {
         $url = $request['url'] ?? '';
@@ -119,6 +115,6 @@ class PluginHandler
             $arr = '解析失败';
             $status = 201;
         }
-        _return_($arr, $status);
+        return_json($arr, $status);
     }
 }

@@ -1,8 +1,7 @@
 <?php
-namespace ascii;
-class PluginMeta
+class ascii
 {
-	public const name = 'ASCII字符画生成';
+    public const name = 'ASCII字符画生成';
     public const version = '1.0';
     public const profile = '上传图片生成字符画';
     public const method = 'PUT';
@@ -14,9 +13,6 @@ class PluginMeta
         $image = @imagecreatefromstring($data);
         return ($image !== false);
     }
-}
-class PluginHandler
-{
     public function init()
     {
         $input = file_get_contents('php://input');
@@ -53,6 +49,6 @@ class PluginHandler
         } else {
             $data =  ["文件必须为jpg格式且大小小于5M", 413];
         }
-        _return_($data[0], $data[1]);
+        return_json($data[0], $data[1]);
     }
 }
