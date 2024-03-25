@@ -18,7 +18,7 @@
 |`response`|[]|数组化的响应参数|
 |`type`|一些工具|插件分类|
 
-!> 插件命名空间必须与插件文件名或外部文件夹名称相同<br>否则该插件不会被加载并记入日志
+!> 插件类名必须与插件文件名或外部文件夹名称相同<br>否则该插件不会被加载并记入日志
 
 !> 自定义用户插件建议放入`extensive_plugins`文件夹<br>`plugins`文件夹内文件每次更新会被删除
 
@@ -29,8 +29,7 @@
 ```php
 <?php
 # name_generator.php
-namespace name_generator;
-class PluginMeta
+class name_generator
 {
     public const name = '亚文化取名机';
     public const version = '1.0';
@@ -40,16 +39,13 @@ class PluginMeta
     public const response = [
         "data" => "你的亚文化名字"
     ];
-}
-class PluginHandler
-{
     public function init()
     {
-        $el1 = ["废墟", "无聊"];
+        $el1 = ["废墟", ..., "无聊"];
         $el2 = ["之", ""];
-        $el3 = ["小丑","放射性"];
-        $el4 = ["天使", "糖"];
-        _return_($el1[array_rand($el1)] . $el2[array_rand($el2)] . $el3[array_rand($el3)] . $el4[array_rand($el4)]);
+        $el3 = ["小丑", ..., "放射性"];
+        $el4 = ["天使",...,"糖"];
+        return_json($el1[array_rand($el1)] . $el2[array_rand($el2)] . $el3[array_rand($el3)] . $el4[array_rand($el4)]);
     }
 }
 ```
@@ -59,20 +55,16 @@ class PluginHandler
 ```php
 <?php
 # name_generator.php
-namespace name_generator;
-class PluginMeta
+class name_generator
 {
-    public const name = '亚文化取名机';
-}
-class PluginHandler
-{
-    public function init()
+    const name = '亚文化取名机';
+    function init()
     {
-        $el1 = ["废墟", "无聊"];
+        $el1 = ["废墟", ..., "无聊"];
         $el2 = ["之", ""];
-        $el3 = ["小丑","放射性"];
-        $el4 = ["天使", "糖"];
-        _return_($el1[array_rand($el1)] . $el2[array_rand($el2)] . $el3[array_rand($el3)] . $el4[array_rand($el4)]);
+        $el3 = ["小丑", ..., "放射性"];
+        $el4 = ["天使",...,"糖"];
+        return_json($el1[array_rand($el1)] . $el2[array_rand($el2)] . $el3[array_rand($el3)] . $el4[array_rand($el4)]);
     }
 }
 ```
@@ -86,41 +78,33 @@ class PluginHandler
 #   |---demo2.php
 
 #index.php
-namespace demo
-class PluginMeta
+class demo
 {
     public const name = 'demo1';
-}
-class PluginHandler
-{
     public function init()
     {
         ...
-        _return_(1);
+        return_json(1);
     }
 }
 
 #demo2.php
-namespace demo2
-class PluginMeta
+class demo2
 {
     public const name = 'demo2';
-}
-class PluginHandler
-{
     public function init()
     {
         ...
-        _return_(2);
+        return_json(2);
     }
 }
 ```
 
 # 部分函数说明
 
-## \_return_
+## \return_json
 
-`_return_($content, $status=200, $location=false)`
+`return_json($content, $status=200, $location=false)`
 
 返回结果(die)
 
@@ -133,7 +117,7 @@ class PluginHandler
 
 ```php
 <?php
-_return_("test", 114514);
+return_json("test", 114514);
 ```
 
 ```json
@@ -171,7 +155,7 @@ _return_("test", 114514);
 public function init() {
     RequestLimit("1/hour");
     ...
-    _return_("OK");
+    return_json("OK");
 }
 ```
 
