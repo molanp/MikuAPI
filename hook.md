@@ -104,13 +104,12 @@ class demo2
 
 ## \return_json
 
-`return_json($content, $status=200, $location=false)`
+`return_json($content, $status=200)`
 
 返回结果(die)
 
 @param mixed $content 返回的数据内容<br>
 @param int $status 状态码，默认为 200<br>
-@param bool|string $location 是否重定向，如果不为false，则重定向到$content内的链接<br>
 @return void
 
 ### 示例
