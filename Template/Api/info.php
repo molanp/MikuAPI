@@ -44,7 +44,9 @@ if ($_SERVER["REQUEST_METHOD"] == "GET") {
             $pages = ($pages - 1) * $limit;
 
             $query = $DATABASE->prepare("SELECT type, top, name, author, url_path, profile, status, time FROM miku_api ORDER BY top DESC, name LIMIT :limit OFFSET :pages");
-            $query->execute([":limit" => $limit, ":pages" => $pages]);
+            $query->bindValue(':limit', $limit, PDO::PARAM_INT);
+            $query->bindValue(':pages', $pages, PDO::PARAM_INT);
+            $query->execute();
             $conname = [];
             while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
                 $url_path = $row["url_path"];

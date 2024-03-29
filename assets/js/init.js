@@ -2,7 +2,7 @@ var scripts = [
     "/assets/js/cookie.js",
     "/assets/js/marked.min.js",
     "/assets/js/theme.js",
-    "https://registry.npmmirror.com/@fancyapps/ui/5.0.33/files/dist/fancybox/fancybox.umd.js",
+    "/assets/js/fancybox.umd.js",
     "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/highlight.min.js"
 ];
 var csses = [
@@ -40,6 +40,23 @@ window.onload = function () {
 window.addEventListener("resize", function () {
     adjustSidebar();
 });
+
+function empty(e) {
+    if (Array.isArray(e)) {
+        return e.length === 0;
+    }
+    switch (e) {
+      case "":
+      case 0:
+      case "0":
+      case null:
+      case false:
+      case undefined:
+        return true;
+      default:
+        return false;
+    }
+  }
 
 function adjustSidebar() {
     if ($(window).width() > 1090) {

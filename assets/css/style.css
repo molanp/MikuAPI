@@ -80,13 +80,15 @@ a {
 mdui-card {
     box-shadow: 0 .125rem .25rem rgba(0, 0, 0, .075) !important;
     min-width: 0;
-    width: 100%;
+    width: 99%;
     word-wrap: break-word;
     border: .0625rem solid rgba(0, 0, 0, .05);
     border-radius: var(--mdui-shape-corner-small) !important;
     background-color: rgb(var(--mdui-color-surface));
     background-clip: border-box;
     margin-bottom: 25px;
+    margin-left: 5px;
+    margin-right: 5px;
     padding: 30px;
     padding-bottom: 35px;
     animation: card-show .25s ease-out;

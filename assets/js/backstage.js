@@ -95,53 +95,62 @@ function load() {
         function (data, status) {
           if (status == "success") {
             var data = data.data;
-            var list = `<div class="grid api" style="margin: 10px;width: 95%;">`;
-            for (var key in data) {
-              plu = data[key];
-              var top_str = (plu.top == "true") ? "<mdui-badge id='top_'>置顶</mdui-badge>" : "<mdui-badge id='top_' style='display: none;'>置顶</mdui-badge>";
-              list += `<mdui-card id="${plu.uuid}" style="margin-bottom: 0px;width: 95%;">
-              <div class="post-title">${plu.name} <div class="post-meta-detail">v${plu.version}</div>${top_str}</div>
-              <div class="post-meta">
-                <div class="post-meta-detail">${plu.class} @${plu.author}</div>
-                <div class="post-meta-devide">|</div>
-                <div class="post-meta-detail"><a href="javascript:top_('${plu.uuid}')">置顶/取消置顶</a></div>
-              </div>
-              <mdui-divider></mdui-divider>
-              <table style="width:100%;">
-              <tbody>
-                <tr>
-                  <td>
-                  <br>
-                  ${plu.type}<br><div class="post-meta-detail">分类</div></td>
-                  <td>
-                    <mdui-switch checked="${plu.status}"></mdui-switch>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-            </mdui-card>`;
-            };
-            list += `</div>
-            <script>
-            $(".api mdui-card[id]").each(function () {
-              $(this).on("change", function () {
-                var send = {
-                  for: "status",
-                  data: {
-                    [$(this).attr("id")]: $(this).find("mdui-switch").prop("checked")
-                  }
-                };
-                
-                sendData("/v2/edit", send, function (data) {
-                  if (data.status == 200) {
-                    popups.snaker.add("已保存");
-                  } else {
-                    popups.snaker.add(data.data);
-                  }
+            if (!empty(data)) {
+              var list = `<div class="grid api">`;
+              for (var key in data) {
+                plu = data[key];
+                var top_str = (plu.top == "true") ? "<mdui-badge id='top_'>置顶</mdui-badge>" : "<mdui-badge id='top_' style='display: none;'>置顶</mdui-badge>";
+                list += `<mdui-card id="${plu.uuid}" style="margin-bottom: 0px;width: 95%;">
+                <div class="post-title">${plu.name} <div class="post-meta-detail">v${plu.version}</div>${top_str}</div>
+                <div class="post-meta">
+                  <div class="post-meta-detail">${plu.class} @${plu.author}</div>
+                  <div class="post-meta-devide">|</div>
+                  <div class="post-meta-detail"><a href="javascript:top_('${plu.uuid}')">置顶/取消置顶</a></div>
+                </div>
+                <mdui-divider></mdui-divider>
+                <table style="width:100%;">
+                <tbody>
+                  <tr>
+                    <td>
+                    <br>
+                    ${plu.type}<br><div class="post-meta-detail">分类</div></td>
+                    <td>
+                      <mdui-switch checked="${plu.status}"></mdui-switch>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              </mdui-card>`;
+              };
+              list += `</div>
+              <script>
+              $(".api mdui-card[id]").each(function () {
+                $(this).on("change", function () {
+                  var send = {
+                    for: "status",
+                    data: {
+                      [$(this).attr("id")]: $(this).find("mdui-switch").prop("checked")
+                    }
+                  };
+                  
+                  sendData("/v2/edit", send, function (data) {
+                    if (data.status == 200) {
+                      popups.snaker.add("已保存");
+                    } else {
+                      popups.snaker.add(data.data);
+                    }
+                  });
                 });
-              });
-            });</script>`;
-            $("#data").html(list);
+              });</script>`;
+              $("#data").html(list);
+            } else {
+              $("#data").html(`<mdui-card>
+              <div class="post-title">暂无API</div>
+              <mdui-divider></mdui-divider>
+              <a
+                  href="javascript:sendData('/v2/update',{},function (responseData) {popups.dialog(responseData.data);});">更新API列表</mdui-button>
+            </a>`);
+            }
           }
         }
       );
@@ -220,7 +229,7 @@ function load() {
             </td></tr>`;
 
           }
-          $("#data").html(`<mdui-card class="mdui-table" style="margin: 10px;width: 95%;">
+          $("#data").html(`<mdui-card class="mdui-table">
           ${list}</tbody></table></mdui-card>
           <br>
           <mdui-card style="margin: 10px;">
@@ -231,7 +240,7 @@ function load() {
               <a href="javascript:archives.draw_new()">发布新</a>
             </div>
           </mdui-card>
-          <mdui-card style="margin: 10px;width: 95%;" id="edit_area">
+          <mdui-card id="edit_area">
           </mdui-card>
           `)
           archives.draw_new();
@@ -246,7 +255,7 @@ function load() {
           token: cookie.get("token")
         },
         function (data) {
-          var setting = `<mdui-card style="margin: 10px;width: 95%;" class="mdui-table">`;
+          var setting = `<mdui-card>`;
           var data = data.data;
           for (var key in data) {
             var value = data[key][0];
@@ -284,10 +293,10 @@ function load() {
             selector: "#banner_description",
             language_url: "/assets/js/zh-Hans.js",
             language: "zh-Hans",
-            plugins: "print preview searchreplace autolink directionality visualblocks visualchars fullscreen image link media template codesample table charmap hr pagebreak nonbreaking anchor insertdatetime advlist lists wordcount imagetools textpattern help emoticons autosave bdmap indent2em autoresize formatpainter axupimgs",
+            plugins: "preview searchreplace autolink directionality visualblocks visualchars fullscreen image link media template codesample table charmap pagebreak nonbreaking anchor insertdatetime advlist lists wordcount help emoticons autosave autoresize",
             toolbar: "undo redo restoredraft | cut copy paste pastetext | forecolor backcolor bold italic underline strikethrough link anchor | alignleft aligncenter alignright alignjustify outdent indent | \
           styleselect formatselect fontselect fontsizeselect | bullist numlist | blockquote subscript superscript removeformat | \
-          table image media charmap emoticons hr pagebreak insertdatetime print preview | fullscreen | bdmap indent2em lineheight formatpainter axupimgs",
+          table image media charmap emoticons pagebreak insertdatetime preview | fullscreen | lineheight",
             toolbar_sticky: true,
             autoresize_max_height: 500,
             autoresize_min_height: 350,
@@ -537,10 +546,10 @@ const archives = {
       selector: "#" + id,
       language_url: "/assets/js/zh-Hans.js",
       language: "zh-Hans",
-      plugins: "print preview searchreplace autolink directionality visualblocks visualchars fullscreen image link media template codesample table charmap hr pagebreak nonbreaking anchor insertdatetime advlist lists wordcount imagetools textpattern help emoticons autosave bdmap indent2em autoresize formatpainter axupimgs",
+      plugins: "preview searchreplace autolink directionality visualblocks visualchars fullscreen image link media template codesample table charmap pagebreak nonbreaking anchor insertdatetime advlist lists wordcount help emoticons autosave autoresize",
       toolbar: "undo redo restoredraft | cut copy paste pastetext | forecolor backcolor bold italic underline strikethrough link anchor | alignleft aligncenter alignright alignjustify outdent indent | \
     styleselect formatselect fontselect fontsizeselect | bullist numlist | blockquote subscript superscript removeformat | \
-    table image media charmap emoticons hr pagebreak insertdatetime print preview | fullscreen | bdmap indent2em lineheight formatpainter axupimgs",
+    table image media charmap emoticons pagebreak insertdatetime preview | fullscreen | lineheight",
       toolbar_sticky: true,
       autoresize_max_height: 500,
       autoresize_min_height: 350,
@@ -598,10 +607,10 @@ const archives = {
           selector: "#" + id,
           language_url: "/assets/js/zh-Hans.js",
           language: "zh-Hans",
-          plugins: "print preview searchreplace autolink directionality visualblocks visualchars fullscreen image link media template codesample table charmap hr pagebreak nonbreaking anchor insertdatetime advlist lists wordcount imagetools textpattern help emoticons autosave bdmap indent2em autoresize formatpainter axupimgs",
+          plugins: "preview searchreplace autolink directionality visualblocks visualchars fullscreen image link media template codesample table charmap pagebreak nonbreaking anchor insertdatetime advlist lists wordcount help emoticons autosave autoresize",
           toolbar: "undo redo restoredraft | cut copy paste pastetext | forecolor backcolor bold italic underline strikethrough link anchor | alignleft aligncenter alignright alignjustify outdent indent | \
         styleselect formatselect fontselect fontsizeselect | bullist numlist | blockquote subscript superscript removeformat | \
-        table image media charmap emoticons hr pagebreak insertdatetime print preview | fullscreen | bdmap indent2em lineheight formatpainter axupimgs",
+        table image media charmap emoticons pagebreak insertdatetime preview | fullscreen | lineheight",
           toolbar_sticky: true,
           autoresize_max_height: 500,
           autoresize_min_height: 350,

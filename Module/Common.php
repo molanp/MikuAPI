@@ -199,10 +199,9 @@ function parseTable($prefix, $key, &$table)
  *
  * @param mixed $content 返回的数据内容
  * @param int $status 状态码，默认为 200
- * @param bool|string $location 是否重定向，如果不为false，则重定向到$content内的链接
  * @return void
  */
-function return_json($content, $status = 200, $location = false)
+function return_json($content, $status = 200)
 {
     header('Access-Control-Allow-Origin: *');
     header('Access-Control-Allow-Methods: *');
@@ -210,12 +209,8 @@ function return_json($content, $status = 200, $location = false)
     header('Access-Control-Expose-Headers: *');
     header('Access-Control-Max-Age: 3600');
     header("HTTP/1.1 $status");
-    if ($location === false) {
-        header('Content-type:text/json;charset=utf-8');
-        die(json_encode(['status' => $status, 'data' => $content, 'time' => time()], JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
-    } else {
-        die(header("Location: $content"));
-    }
+    header('Content-type:text/json;charset=utf-8');
+    die(json_encode(['status' => $status, 'data' => $content, 'time' => time()], JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
 }
 /**
  * 检查 API 状态
@@ -359,14 +354,18 @@ function AddAccess()
     $url = addSlashIfNeeded(parse_url($_SERVER['REQUEST_URI'])["path"]) ?? "Unknown";
     $referer = $_SERVER["HTTP_REFERER"] ?? "Unknown";
     $param = json($_REQUEST);
-    $stmt = $DATABASE->prepare("INSERT INTO miku_access (ip, url, referer, param, method, agent) VALUES (?, ?, ?, ?, ?, ?)");
-    $stmt->bindParam(1, $ip);
-    $stmt->bindParam(2, $url);
-    $stmt->bindParam(3, $referer);
-    $stmt->bindParam(4, $param);
-    $stmt->bindParam(5, $_SERVER["REQUEST_METHOD"]);
-    $stmt->bindParam(6, $_SERVER['HTTP_USER_AGENT']);
-    $stmt->execute();
+    try {
+        $stmt = $DATABASE->prepare("INSERT INTO miku_access (ip, url, referer, param, method, agent) VALUES (?, ?, ?, ?, ?, ?)");
+        $stmt->bindParam(1, $ip);
+        $stmt->bindParam(2, $url);
+        $stmt->bindParam(3, $referer);
+        $stmt->bindParam(4, $param);
+        $stmt->bindParam(5, $_SERVER["REQUEST_METHOD"]);
+        $stmt->bindParam(6, $_SERVER['HTTP_USER_AGENT']);
+        $stmt->execute();
+    } catch (PDOException $e) {
+        (new logger())->error("PDOException: ".$e->errorInfo[2]);
+    }
 }
 
 /**

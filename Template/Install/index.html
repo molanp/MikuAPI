@@ -27,11 +27,11 @@
             $DATABASE = new PDO($bind, $username, $password);
             $DATABASE->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             $connect = "<?php\n";
-            $connect .= "\t\$bind = \"{$bind}\";\n";
+            $connect .= "\t\$bind = \"{$bind};charset=utf8mb4\";\n";
             $connect .= "\t\$username = \"{$username}\";\n";
             $connect .= "\t\$password = \"{$password}\";\n";
-            $connect .= "\t\$DATABASE = new PDO('$bind', '$username', '$password');\n";
-            $connect .= "\$DATABASE->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);";
+            $connect .= "\t\$DATABASE = new PDO(\$bind, '$username', '$password');\n";
+            $connect .= "\t\$DATABASE->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);";
 
             @mkdir(__CORE_DIR__ . "/Config");
             $file = fopen(__CORE_DIR__ . "/Config/connect.php", "w");
@@ -43,28 +43,28 @@
                 des TEXT,
                 belong TEXT,
                 time TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-            )");
+            ) CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci;");
             try {
                 $DATABASE->exec("CREATE UNIQUE INDEX idx_miku_data ON miku_data (idx(50), belong(20))");
             } catch (Exception $e) {
             }
             $DATABASE->exec("CREATE TABLE IF NOT EXISTS miku_users (
-                id INTEGER NOT NULL AUTO_INCREMENT,
+                id INT NOT NULL AUTO_INCREMENT,
                 username TEXT,
                 password TEXT,
                 token TEXT,
                 apikey TEXT,
-                permission INTEGER,
+                permission INT,
                 regtime TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                 logtime TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
                 PRIMARY KEY (id)
-            )");
+            ) CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci");            
             try {
                 $DATABASE->exec("CREATE INDEX idx_miku_users ON miku_users (username(50))");
             } catch (Exception $e) {
             }
             $DATABASE->exec("CREATE TABLE IF NOT EXISTS miku_archives (
-                    id INTEGER NOT NULL AUTO_INCREMENT,
+                    id INT NOT NULL AUTO_INCREMENT,
                     title TEXT,
                     content TEXT,
                     author TEXT,
@@ -72,7 +72,7 @@
                     date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                     modified TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
                     PRIMARY KEY (id)
-                )");
+            ) CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci;");
             $DATABASE->exec("INSERT INTO miku_archives (title, content, author, type) 
                 VALUES ('欢迎使用MikuAPI', '这是系统默认生成的公告，你可以<code>删除</code>,<code>编辑</code>它', '{$username}', 'announce');
             ");
@@ -117,7 +117,7 @@
             }
 
             $DATABASE->exec("CREATE TABLE IF NOT EXISTS miku_access (
-                id INTEGER NOT NULL AUTO_INCREMENT,
+                id INT NOT NULL AUTO_INCREMENT,
                 time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                 ip TEXT,
                 url TEXT,
@@ -126,7 +126,7 @@
                 param TEXT(200),
                 agent TEXT(100),
                 PRIMARY KEY (id)
-            )");
+            ) CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci;");
             try {
                 $DATABASE->exec("CREATE INDEX idx_miku_access ON miku_access (time(50), ip(50), url(50), referer(50))");
             } catch (Exception $e) {
@@ -149,7 +149,7 @@
                     status TEXT,
                     time TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
                     PRIMARY KEY (uuid)
-                );");
+            ) CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci;");
             try {
                 $DATABASE->exec("CREATE INDEX idx_miku_api ON miku_api (name(50))");
             } catch (Exception $e) {

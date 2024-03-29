@@ -16,7 +16,7 @@ if (isset(__DATA__["close_site"], __DATA__["cc_protect"])) {
     }
 }
 
-if ($action != "miku" && $action != "install") {
+if ($action != "install") {
     AddAccess();
 }
 switch ($action) {
