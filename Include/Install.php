@@ -13,7 +13,7 @@ if (file_exists(__CORE_DIR__ . '/install.lock')) { ?>
         <link rel="bookmark" href="/favicon.ico" type="image/x-icon" />
         <title>安装MikuAPI</title>
         <script src="/assets/js/init.js"></script>
-        <script src="https://registry.npmmirror.com/mdui/2.0.6/files/mdui.global.js"></script>
+        <script src="https://registry.npmmirror.com/mdui/2.1.0/files/mdui.global.js"></script>
     </head>
 
     <body>

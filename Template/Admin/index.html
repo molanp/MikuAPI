@@ -13,7 +13,7 @@ if (tokentime($_COOKIE)) {
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <link rel="Shortcut Icon" href="/favicon.ico">
     <link rel="bookmark" href="/favicon.ico" type="image/x-icon" />
-    <script src="https://registry.npmmirror.com/mdui/2.0.6/files/mdui.global.js"></script>
+    <script src="https://registry.npmmirror.com/mdui/2.1.0/files/mdui.global.js"></script>
     <script src="/assets/js/jquery-3.7.1.min.js"></script>
     <script src="/assets/js/init.js"></script>
     <title>登录</title>
@@ -55,7 +55,7 @@ if (tokentime($_COOKIE)) {
 
         function sendData(url, data, callback) {
             try {
-                data["token"] = cookie.get("token");
+                data["token"] = cookie.get("token", 114514);
                 $.post(url, data, function (data, status) {
                     callback(data, status);
                 });
