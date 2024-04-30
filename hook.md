@@ -102,7 +102,7 @@ class demo2
 
 # 部分函数说明
 
-## \return_json
+## return_json
 
 `return_json($content, $status=200)`
 
