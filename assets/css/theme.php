@@ -7,7 +7,7 @@ if (file_exists(__CORE_DIR__ . DIRECTORY_SEPARATOR .  DIRECTORY_SEPARATOR . "ins
     $url = (new Data())->get("option", "banner_image");
     $hex = str_replace("#", "", (new Data())->get("option", "theme_color"));
 } else {
-	$url = "";
+    $url = "";
     $hex = "39C5BB";
 }
 if (strlen($hex) == 3) {
@@ -52,6 +52,7 @@ echo <<<CSS
     --mdui-color-surface-container-low-light: 255, 255, 255;
     --mdui-color-surface-container-highest-light: $surface_container_highest_light;
     --mdui-color-surface-container-high-light: 238, 250, 249;
+    --mdui-color-primary-dark: 170, 170, 170;
     --mdui-color-primary-container-dark: 0, 0, 0;
     --mdui-color-background-dark: 10, 10, 10;
     --mdui-color-secondary-container-dark: 20, 20, 20;

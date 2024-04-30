@@ -1,5 +1,13 @@
 $(function () {
+    window.page = 1;
     $.get("/v2/sitemap");
+    $.get(
+        url = "/v2/info",
+    )
+        .done(function (data) {
+            $("#app_api").html("");
+            api(data.data);
+        })
 })
 
 function api(data) {
@@ -40,25 +48,36 @@ function api(data) {
     $("#app_api").append(item);
 }
 
-function lazyload(x) {
-    id = parseInt(x.id ?? 0);
-    x.id = id + 1;
-    $.get(
-        url = "/v2/info",
-        data = {
-            page: id
-        }
-    )
-        .done(function (data) {
-            if (data.data.length != 0) {
-                api(data.data);
-            } else {
-                x.style.display = "none";
-                mdui.snackbar({
-                    message: "已经到顶了哦！",
-                    placement: "top",
-                    closeable: true
+
+
+window.addEventListener('scroll',
+    mdui.throttle(() => {
+        console.log('update');
+        var windowHeight = $(window).height();
+        var documentHeight = $(document).height();
+        var scrollTop = $(window).scrollTop();
+        var scrollBottom = documentHeight - (windowHeight + scrollTop);
+        if (scrollBottom <= 1 && window.page >= 0) {
+            $('html, body').animate({ scrollTop: scrollTop });
+            window.page += 1
+            $.get(
+                url = "/v2/info",
+                data = {
+                    page: window.page
+                }
+            )
+                .done(function (data) {
+                    if (data.data.length != 0) {
+                        api(data.data);
+                    } else {
+                        mdui.snackbar({
+                            message: "已经到顶了哦！",
+                            placement: "top",
+                            closeable: true
+                        })
+                        window.page = -1;
+                    }
                 })
-            }
-        })
-}
+        }
+    }, 500)
+)

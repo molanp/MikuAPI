@@ -3,11 +3,11 @@ var scripts = [
     "/assets/js/marked.min.js",
     "/assets/js/theme.js",
     "/assets/js/fancybox.umd.js",
-    "https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/highlight.min.js"
+    "/assets/js/highlight.min.js"
 ];
 var csses = [
     "/assets/css/mark.css",
-    "https://registry.npmmirror.com/mdui/2.0.6/files/mdui.css",
+    "https://unpkg.com/mdui@2/mdui.css",
     "https://registry.npmmirror.com/@fancyapps/ui/5.0.33/files/dist/fancybox/fancybox.css",
     "https://registry.npmmirror.com/highlight.js/11.9.0/files/styles/default.min.css",
     "/assets/css/style.css",

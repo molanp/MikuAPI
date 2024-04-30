@@ -1,12 +1,16 @@
 <?php
 ini_set("date.timezone", "Asia/Shanghai");
-require __DIR__ . DIRECTORY_SEPARATOR . "Config.inc.php";
-require __MODULE_DIR__ . DIRECTORY_SEPARATOR . DIRECTORY_SEPARATOR . "Common.php";
+require __DIR__ . "/Config.inc.php";
+require __MODULE_DIR__ . "/Common.php";
+require __MODULE_DIR__ . '/Config.class.php';
+require __MODULE_DIR__ . '/RequestsManager.php';
+require __MODULE_DIR__ . '/Watchdog.php';
+require __MODULE_DIR__ . '/LoggerService.php';
 
 $options = [];
-if (file_exists(__CORE_DIR__ . DIRECTORY_SEPARATOR . "install.lock")) {
-    if (file_exists(__CORE_DIR__ . DIRECTORY_SEPARATOR . "Config" . DIRECTORY_SEPARATOR . "connect.php")) {
-        require_once __CORE_DIR__ . DIRECTORY_SEPARATOR . "Config" . DIRECTORY_SEPARATOR . "connect.php";
+if (file_exists(__CORE_DIR__ . "/install.lock")) {
+    if (file_exists(__CORE_DIR__ . "/Config/connect.php")) {
+        require_once __CORE_DIR__ . "/Config/connect.php";
         $Data = new Data();
         $options = $Data->get("option");
     }
@@ -22,4 +26,4 @@ $server = [
 $options["version"] = "0.0.1";
 define("__CONFIG__", $server);
 define("__DATA__", $options);
-require __DIR__ . DIRECTORY_SEPARATOR . "Include" . DIRECTORY_SEPARATOR . "Index.php";
+require __DIR__ . "/Include/Index.php";

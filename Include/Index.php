@@ -21,37 +21,37 @@ if ($action != "install") {
 }
 switch ($action) {
     case "install":
-        include_once __INCLUDE_DIR__ . DIRECTORY_SEPARATOR . "Install.php";
+        include_once __INCLUDE_DIR__ . "/Install.php";
         break;
     case "home":
         if (isset($_REQUEST['s'])) {
-            include_once __TEMPLATE_DIR__ . DIRECTORY_SEPARATOR . "Home" . DIRECTORY_SEPARATOR . "search.html";
+            include_once __TEMPLATE_DIR__ . "/Home/search.html";
         } else {
-            include_once __TEMPLATE_DIR__ . DIRECTORY_SEPARATOR . "Home" . DIRECTORY_SEPARATOR . "index.html";
+            include_once __TEMPLATE_DIR__ . "/Home/index.html";
         }
         break;
     case "miku":
-        include_once __TEMPLATE_DIR__ . DIRECTORY_SEPARATOR . "Admin" . DIRECTORY_SEPARATOR . "index.html";
+        include_once __TEMPLATE_DIR__ . "/Admin/index.html";
         break;
     case "docs":
-        include_once __TEMPLATE_DIR__ . DIRECTORY_SEPARATOR . "Home" . DIRECTORY_SEPARATOR . "manager.html";
+        include_once __TEMPLATE_DIR__ . "/Home/manager.html";
         break;
     case "api":
-        include_once __CORE_DIR__ . DIRECTORY_SEPARATOR . "loader.php";
+        include_once __CORE_DIR__ . "/loader.php";
         break;
     case "rank":
-        include_once __TEMPLATE_DIR__ . DIRECTORY_SEPARATOR . "Home" . DIRECTORY_SEPARATOR . "rank.html";
+        include_once __TEMPLATE_DIR__ . "/Home/rank.html";
         break;
     case "v2":
-        if (file_exists(__TEMPLATE_DIR__ . DIRECTORY_SEPARATOR . "Api" . substr(__API_PATH__, 0, -1) . ".php")) {
-            include_once __TEMPLATE_DIR__ . DIRECTORY_SEPARATOR . "Api" . substr(__API_PATH__, 0, -1) . ".php";
+        if (file_exists(__TEMPLATE_DIR__ . "/Api/" . substr(__API_PATH__, 0, -1) . ".php")) {
+            include_once __TEMPLATE_DIR__ . "/Api/" . substr(__API_PATH__, 0, -1) . ".php";
         } else {
-            include_once __TEMPLATE_DIR__ . DIRECTORY_SEPARATOR . "Home" . DIRECTORY_SEPARATOR . "404.html";
+            include_once __TEMPLATE_DIR__ . "/Home/404.html";
         }
         break;
     case "archives":
-        include_once __TEMPLATE_DIR__ . DIRECTORY_SEPARATOR . "Home" . DIRECTORY_SEPARATOR . "archives.html";
+        include_once __TEMPLATE_DIR__ . "/Home/archives.html";
         break;
     default:
-        include_once __TEMPLATE_DIR__ . DIRECTORY_SEPARATOR . "Home" . DIRECTORY_SEPARATOR . "404.html";
+        include_once __TEMPLATE_DIR__ . "/Home/404.html";
 }

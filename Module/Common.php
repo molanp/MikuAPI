@@ -1,9 +1,15 @@
 <?php
-include_once __MODULE_DIR__ . '/Config.class.php';
-include_once __MODULE_DIR__ . '/requests.php';
-include_once __MODULE_DIR__ . '/watchdog.php';
-include_once __MODULE_DIR__ . '/logger.php';
 
+function FoundPlugin($path)
+{
+    $file = __ROOT_DIR__ . "/" . __PLUGIN_DIR__[0] . "/" . str_replace('\\', '/', $path) . '.php';
+    if (file_exists($file)) {
+        return true;
+    } elseif (file_exists(__ROOT_DIR__ . "/" . __PLUGIN_DIR__[0] . "/" . str_replace('\\', '/', $path) . '/index.php')) {
+        return true;
+    }
+    return false;
+}
 /**
  * 跳转到某一链接
  * 
@@ -93,7 +99,7 @@ function tokentime($data)
  * @param bool $array $data是否为请求参数数组
  * @return mixed
  */
-function get_name($data, $array=false)
+function get_name($data, $array = false)
 {
     global $DATABASE;
     if (!$DATABASE) return null;
@@ -108,7 +114,7 @@ function get_name($data, $array=false)
 }
 
 /**
- * 在给定的字符串开头或末尾添加斜杠("/")，如果它尚未以斜杠结尾。
+ * 在给定的字符串开头和末尾添加斜杠("/")，如果它尚未以斜杠结尾。
  *
  * @param string $inputString 要处理的字符串
  * @return string 处理后的字符串，确保以斜杠结尾
@@ -120,6 +126,20 @@ function addSlashIfNeeded($inputString)
     }
     if (substr($inputString, -1) !== '/') {
         $inputString .= '/';
+    }
+    return $inputString;
+}
+
+/**
+ * 在给定的字符串末尾删除斜杠("/")，如果它以斜杠结尾。
+ *
+ * @param string $inputString 要处理的字符串
+ * @return string 处理后的字符串，确保不以斜杠结尾
+ */
+function delSlashIfNeeded($inputString)
+{
+    if (substr($inputString, -1) === '/') {
+        $inputString = substr($inputString, 0, -1);
     }
     return $inputString;
 }
@@ -364,7 +384,7 @@ function AddAccess()
         $stmt->bindParam(6, $_SERVER['HTTP_USER_AGENT']);
         $stmt->execute();
     } catch (PDOException $e) {
-        (new logger())->error("PDOException: ".$e->errorInfo[2]);
+        (new logger())->error("PDOException: " . $e->errorInfo[2]);
     }
 }
 
@@ -450,7 +470,7 @@ function code($code)
         503 => 'Service Unavailable',
         504 => 'Gateway Timeout',
         505 => 'HTTP Version Not Supported'
-    ];    
+    ];
     if (array_key_exists($code, $data)) {
         return_json($data[$code], $code);
     } else {

@@ -528,7 +528,7 @@ const archives = {
       day: "numeric"
     });
     var chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-    var id = '';
+    var id = 'miku_';
     id += chars.charAt(Math.floor(Math.random() * 52));
     for (var i = 1; i < 8; i++) {
       id += chars.charAt(Math.floor(Math.random() * chars.length));

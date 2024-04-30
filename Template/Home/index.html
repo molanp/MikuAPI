@@ -11,7 +11,7 @@
     <link rel="Shortcut Icon" href="/favicon.ico">
     <link rel="bookmark" href="/favicon.ico" type="image/x-icon" />
     <script src="/assets/js/jquery-3.7.1.min.js"></script>
-    <script src="https://registry.npmmirror.com/mdui/2.1.0/files/mdui.global.js"></script>
+    <script src="https://unpkg.com/mdui@2/mdui.global.js"></script>
     <script src="/assets/js/init.js"></script>
     <script src="/assets/js/marked.min.js"></script>
     <script src="/assets/js/app.js"></script>
@@ -41,62 +41,7 @@
                 </div>
             </noscript>
             <div id="app_api">
-            <?php
-            $count = [];
-            $query = "SELECT url, COUNT(*) AS count FROM miku_access GROUP BY url";
-            $stmt = $DATABASE->prepare($query);
-            $stmt->execute();
-            while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                $count[$row["url"]] = $row["count"];
-            }
-            $query = $DATABASE->prepare("SELECT name, top, type, author, time, url_path, profile 
-            FROM miku_api 
-            ORDER BY top DESC, name
-            LIMIT 12 OFFSET 0");
-            $query->execute();
-            $result = $query->fetch(PDO::FETCH_ASSOC);
-            if (!empty($result)) {
-                while ($row = $result) {
-                    $count = $count["/api" . $row["url_path"]] ?? 0;
-                    $top_str = ($row["top"] == "true") ? '
-                    <div class="post-meta-devide">|</div>
-                    <div class="post-meta-detail">
-                        <mdui-icon name="push_pin" style="font-size: 14.5px;"></mdui-icon>置顶
-                    </div>
-                    ' : '';            
-                    echo '
-                        <mdui-card class="text-center" href="docs' . $row['url_path'] . '">
-                            <header class="post-header text-center">
-                                <a class="post-title" href="docs' . $row['url_path'] . '">' . $row["name"] . '</a>' . '
-                                <div class="post-meta">
-                                    <div class="post-meta-detail">
-                                        <mdui-icon name="account_circle" style="font-size: 14.5px;"></mdui-icon>' . $row["author"] . '
-                                    </div>
-                                    <div class="post-meta-devide">|</div>
-                                    <div class="post-meta-detail">
-                                        <mdui-icon name="access_time" style="font-size: 14.5px;"></mdui-icon>' . $row["time"] . '
-                                    </div>
-                                    <div class="post-meta-devide">|</div>
-                                    <div class="post-meta-detail">
-                                        <mdui-icon name="equalizer" style="font-size: 14.5px;"></mdui-icon>' . $count . '次
-                                    <div class="post-meta-devide">|</div>
-                                    <div class="post-meta-detail">
-                                        <mdui-icon name="bookmark_border" style="font-size: 14.5px;"></mdui-icon>' . $row["type"] . '
-                                    </div>
-                                    ' . $top_str . '
-                                </div>
-                            </header>
-                            <div class="post-content">' . mb_substr($row["profile"], 0, 50, 'UTF-8') . '</div>
-                    </mdui-card>';
-                }
-                ?>
-                    </div>
-                    <div id="lazyload" class="grid">
-                        <mdui-button id='2' onclick='lazyload(this)'>继续加载</mdui-button>
-                    </div>
-            <?php
-            } else {
-                ?><mdui-card>
+                <mdui-card>
                     <header class="post-header text-center">
                         <a class="post-title" id="title" href="">这里什么也没有</a>
                         <div class="post-meta">
@@ -106,19 +51,18 @@
                     <div class="post-content">
                         <p>当前没有任何API呢，请联系管理员更新API信息.</p>
                     </div>
-                </mdui-card><?php
-            }?>
-                <footer class="text-center">
-                    <mdui-card>
-                        <span id="record">
-                            <?=__DATA__['record']?>
-                        </span>
-                        <span id="copyright">&copy;
-                            <?=__DATA__['copyright']?>
-                        </span>
-                    </mdui-card>
-                </footer>
+                </mdui-card>
             </div>
+            <footer class="text-center">
+                <mdui-card>
+                    <span id="record">
+                        <?=__DATA__['record']?>
+                    </span>
+                    <span id="copyright">&copy;
+                        <?=__DATA__['copyright']?>
+                    </span>
+                </mdui-card>
+            </footer>
         </div>
         <div class="right">
             <mdui-card class="overview">

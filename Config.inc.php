@@ -7,10 +7,10 @@ define(
         "extensive_plugins"
     ]
 );
-define("__CORE_DIR__", __ROOT_DIR__ . DIRECTORY_SEPARATOR . "Core");
-define("__TEMPLATE_DIR__", __ROOT_DIR__ . DIRECTORY_SEPARATOR . "Template");
-define("__MODULE_DIR__", __ROOT_DIR__ . DIRECTORY_SEPARATOR . "Module");
-define("__INCLUDE_DIR__", __ROOT_DIR__ . DIRECTORY_SEPARATOR . "Include");
+define("__CORE_DIR__", __ROOT_DIR__ . "/Core");
+define("__TEMPLATE_DIR__", __ROOT_DIR__ . "/Template");
+define("__MODULE_DIR__", __ROOT_DIR__ . "/Module");
+define("__INCLUDE_DIR__", __ROOT_DIR__ . "/Include");
 define(
     "__OPTION_LIST__",
     [
