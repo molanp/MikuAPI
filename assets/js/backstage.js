@@ -261,7 +261,7 @@ function load() {
             var value = data[key][0];
             if (value === "true") {
               setting += `
-                <p()${data[key][1]}
+                <p>${data[key][1]}
                 <mdui-switch id="${key}" checked></mdui-switch>
                 </p>`;
             } else if (value === "false") {
