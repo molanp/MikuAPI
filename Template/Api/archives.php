@@ -18,7 +18,7 @@ switch ($_SERVER["REQUEST_METHOD"]) {
             }
             return_json($result->fetchAll(PDO::FETCH_ASSOC));
         } else {
-            $result = $DATABASE->prepare("SELECT title, content FROM miku_archives WHERE id = :id");
+            $result = $DATABASE->prepare("SELECT id, title, date, modified, content FROM miku_archives WHERE id = :id");
             $result->execute([":id" => $id]);
             return_json($result->fetch(PDO::FETCH_ASSOC));
         }
@@ -48,7 +48,7 @@ switch ($_SERVER["REQUEST_METHOD"]) {
                 ":type" => "announce",
             ]);
             return_json("发布成功");
-        } else if (is_numeric($_REQUEST["id"])) {
+        } elseif (is_numeric($_REQUEST["id"])) {
             $result = $DATABASE->prepare("UPDATE miku_archives SET title = :title, content = :content WHERE id = :id");
             $result->execute([
                 ":title" => $_REQUEST["title"],

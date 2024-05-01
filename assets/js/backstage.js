@@ -522,17 +522,7 @@ function TrendChart() {
 
 const archives = {
   draw_new: function () {
-    var date = new Date().toLocaleDateString("zh-CN", {
-      year: "numeric",
-      month: "long",
-      day: "numeric"
-    });
-    var chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-    var id = 'miku_';
-    id += chars.charAt(Math.floor(Math.random() * 52));
-    for (var i = 1; i < 8; i++) {
-      id += chars.charAt(Math.floor(Math.random() * chars.length));
-    }
+    var id = "miku_" + Math.random().toString(36).substr(2, 8);
     $("#edit_area").html(`<header class="post-header">
     <font class="post-title" id="title" href="#">发布新公告</font>
   </header>
@@ -593,7 +583,7 @@ const archives = {
         id: id,
         type: "announce"
       }, function (data) {
-        var id = Math.random().toString(36).substr(2, 8)
+        var id = "miku_" + Math.random().toString(36).substr(2, 8);
         $("#edit_area").html(`<header class="post-header">
         <font class="post-title" id="title" href="#">编辑公告</font>
       </header>
