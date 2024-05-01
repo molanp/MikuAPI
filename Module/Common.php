@@ -2,10 +2,7 @@
 
 function FoundPlugin($path)
 {
-    $file = __ROOT_DIR__ . "/" . __PLUGIN_DIR__[0] . "/" . str_replace('\\', '/', $path) . '.php';
-    if (file_exists($file)) {
-        return true;
-    } elseif (file_exists(__ROOT_DIR__ . "/" . __PLUGIN_DIR__[0] . "/" . str_replace('\\', '/', $path) . '/index.php')) {
+    if (file_exists(__ROOT_DIR__ . "/" . __PLUGIN_DIR__[0] . "/" . delSlashIfNeeded(str_replace('\\', '/', $path)) . '.php') || file_exists(__ROOT_DIR__ . "/" . __PLUGIN_DIR__[0] . "/" . str_replace('\\', '/', $path) . '/index.php')) {
         return true;
     }
     return false;

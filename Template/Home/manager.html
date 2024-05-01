@@ -101,7 +101,7 @@ $count = $stmt->fetch(PDO::FETCH_ASSOC)["count"] ?? 0;
 					<div class="md" id="api_profile"><?=$data["profile"]?></div>
 					<br>
 					<blockquote>API 地址</blockquote>
-					<div id="api_address" class="mdui-table"><?=re_add(["GET"],[$data["url_path"]=>""])?></div>
+					<div id="api_address" class="mdui-table"><?=re_add(["GET"],["/api" . $data["url_path"]=>""])?></div>
 					<br>
 					<?php if (!empty($data["request"])): ?>
 					<blockquote>参数列表 (<code>*</code>是必填项)</blockquote>
