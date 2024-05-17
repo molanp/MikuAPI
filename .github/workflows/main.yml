@@ -20,12 +20,10 @@ jobs:
         run: npm install javascript-obfuscator
 
       - name: Obfuscate JS files
-        run: npx javascript-obfuscator assets/js -o assets/js-obfuscated
+        run: npx javascript-obfuscator assets/js -o assets/js
 
       - name: Compress assets
-        run: |
-          mkdir compressed
-          zip -r compressed/MikuAPI.zip ./ -x "*.git*" "*.vscode*" "node_modules/*"
+        run: zip -r MikuAPI.zip ./ -x "*.git*" "*.vscode*" "node_modules/*"
 
       - name: Create release
         id: create_release
@@ -45,6 +43,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./compressed/MikuAPI.zip
+          asset_path: .MikuAPI.zip
           asset_name: MikuAPI.zip
           asset_content_type: application/zip
