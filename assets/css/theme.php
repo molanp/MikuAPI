@@ -73,7 +73,7 @@ CSS;
 margin: auto;
 text-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
 background-color: rgb(var(--mdui-color-primary-container));
-background-image: url('<?= $url ?>');
+background-image: '<?= $url ?>';
 margin-bottom: 25px;
 overflow: hidden;
 background-position: center;
