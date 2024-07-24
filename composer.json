@@ -8,7 +8,7 @@
         "templating"
     ],
     "homepage": "https://github.com/molanp/MikuAPI",
-    "license": "MIT",
+    "license": "Apache-2.0",
     "authors": [
         {
             "name": "molanp",
