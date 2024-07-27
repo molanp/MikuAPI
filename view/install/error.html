@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" />
+    <meta name="renderer" content="webkit" />
+    <meta name="force-rendering" content="webkit" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <link rel="Shortcut Icon" href="/favicon.ico">
+    <link rel="bookmark" href="/favicon.ico" type="image/x-icon" />
+    <title>安装MikuAPI</title>
+    <script src="https://unpkg.com/jquery@3.7.1/dist/jquery.js"></script>
+    <script src="https://unpkg.com/mdui@2/mdui.global.js"></script>
+    <link href="https://unpkg.com/mdui@2/mdui.css" rel="stylesheet" />
+    <link href="/static/css/style.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="grid">
+        <div></div>
+        <mdui-card>
+            <h3>安装失败</h3>
+            <mdui-button href="/">重试</mdui-button>
+            <p>原因如下</p>
+            <mdui-text-field autosize readonly value="{$err}"></mdui-text-field>
+        </mdui-card>
+        <div></div>
+    </div>
+</body>
+</html>

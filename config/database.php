@@ -34,7 +34,10 @@ return [
             //端口
             'hostport' => '3306',
             //数据库连接参数
-            'params' => [],
+            'params' => [
+                \PDO::ATTR_ERRMODE,
+                \PDO::ERRMODE_EXCEPTION
+            ],
             //数据库编码默认采用utf8
             'charset' => 'utf8',
             //数据库表前缀

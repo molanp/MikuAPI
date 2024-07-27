@@ -10,11 +10,10 @@
 // +----------------------------------------------------------------------
 use think\facade\Route;
 
-Route::get(':i', function ($i) {
-    if ($i == 'f') {
-        return 'f';
-    }
-    return 'hello,!'.$i;
-});
-
+//Route::get('/1:i', function ($i) {
+//    if ($i == 'f') {
+//        return 'f';
+//    }
+//    return 'hello,!'.$i;
+//});
 

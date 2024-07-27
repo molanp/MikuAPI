@@ -21,7 +21,8 @@
         "topthink/framework": "^8.0",
         "topthink/think-orm": "^3.0",
         "topthink/think-filesystem": "^2.0",
-        "topthink/think-view": "^2.0"
+        "topthink/think-view": "^2.0",
+        "topthink/think-migration": "^3.1"
     },
     "require-dev": {
         "symfony/var-dumper": ">=4.2",
@@ -44,5 +45,11 @@
             "@php think vendor:publish"
         ],
         "test": "phpunit"
+    },
+    "repositories": {
+        "packagist": {
+            "type": "composer",
+            "url": "https://mirrors.aliyun.com/composer/"
+        }
     }
 }
