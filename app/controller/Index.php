@@ -6,21 +6,24 @@ use app\BaseController;
 use think\facade\View;
 use think\facade\Db;
 
+function isInstall()
+{
+    try {
+        if (DB::table('migrations')->where('migration_name', 'InstallMikuapi')->find()) {
+            return true;
+        };
+    } catch (\Exception $e) {
+        return false;
+    }
+}
 
 class Index extends BaseController
 {
     public function index()
     {
-        try {
-            $migrationExists = DB::table('migrations')
-                ->where('migration_name', 'InstallMikuapi')
-                ->exists();
-
-            $view = $migrationExists ? 'index/index' : 'install/index';
-        } catch (\Exception $e) {
-            $view = 'install/index';
+        if (isInstall()) {
+            return View::fetch('index/index');
         }
-
-        return View::fetch($view);
+        return View::fetch('install/index');
     }
 }

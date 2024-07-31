@@ -7,10 +7,10 @@ use think\facade\View;
 use think\facade\Config;
 use think\facade\Console;
 
-function check()
+function isInstall()
 {
     try {
-        if (DB::table('migrations')->where('migration_name', 'InstallMikuapi')->exists()) {
+        if (DB::table('migrations')->where('migration_name', 'InstallMikuapi')->find()) {
             return true;
         };
     } catch (\Exception $e) {
@@ -22,7 +22,7 @@ class Install
 {
     public function index()
     {
-        if (check()) {
+        if (isInstall()) {
             return json([
                 'status' => 404,
                 'data' => 'Not Found',
